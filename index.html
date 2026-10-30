@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Central College Maharagama - Official Website</title>
+    
+    <!-- System Styles & Fonts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Noto+Sans+Sinhala:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        schoolGreen: '#0b5329',
+                        schoolGold: '#d4af37',
+                        darkGreen: '#063518'
+                    },
+                    fontFamily: {
+                        'sans': ['Montserrat', 'sans-serif'],
+                        'serif': ['"Playfair Display"', 'serif'],
+                        'sinhala': ['"Noto Sans Sinhala"', 'sans-serif'],
+                        'splash': ['"Abhaya Libre"', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* =========================================
+           SPLASH SCREEN ANIMATIONS
+           ========================================= */
+        @keyframes logoFadeIn {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes wordFadeIn {
+            0% { opacity: 0; transform: translateY(10px); filter: blur(2px); }
+            100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
+        @keyframes splashFadeOut {
+            0% { opacity: 1; visibility: visible; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+        
+        #splash-screen {
+            animation: splashFadeOut 1s ease-in-out forwards 4.8s;
+        }
+
+        .splash-logo {
+            opacity: 0;
+            animation: logoFadeIn 1s ease-out forwards 0.2s;
+        }
+        
+        .splash-word {
+            opacity: 0;
+            display: inline-block;
+            animation: wordFadeIn 0.8s ease-out forwards;
+        }
+
+        /* =========================================
+           HERO BACKGROUND CANVAS
+           ========================================= */
+        .hero-bg {
+            position: relative;
+            background: url('schoolimg.jpg');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1; 
+        }
+        
+        .hero-bg::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.82));
+            z-index: -1; 
+            transition: opacity 0.6s ease-in-out; 
+        }
+
+        .hero-bg:hover::before {
+            opacity: 0.2; 
+        }
+
+        /* Modal Dialog Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .modal-animate {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen overflow-hidden">
+
+    <!-- ==============================================
+         SPLASH SCREEN
+         ============================================== -->
+    <div id="splash-screen" class="fixed inset-0 bg-darkGreen z-[999999] flex flex-col items-center justify-center transition-opacity">
+        <img src="logo.jpg" alt="Central College Maharagama Crest" class="splash-logo w-24 h-24 md:w-32 md:h-32 object-contain bg-white rounded-full p-2 mb-8 shadow-[0_0_40px_rgba(212,175,55,0.25)]">
+        <div class="flex space-x-3 md:space-x-5 text-xl md:text-4xl text-white font-serif tracking-[0.2em] drop-shadow-lg uppercase">
+            <span class="splash-word" style="animation-delay: 0.8s;">Know</span>
+            <span class="splash-word" style="animation-delay: 1.2s;">What</span>
+            <span class="splash-word" style="animation-delay: 1.6s;">To</span>
+            <span class="splash-word" style="animation-delay: 2.0s;">Do</span>
+            <span class="splash-word" style="animation-delay: 2.4s;">And</span>
+            <span class="splash-word" style="animation-delay: 2.8s;">Do</span>
+            <span class="splash-word" style="animation-delay: 3.2s;">It</span>
+        </div>
+        <div class="mt-8 flex space-x-2 md:space-x-3 text-sm md:text-lg text-schoolGold/80 font-splash tracking-widest drop-shadow-sm">
+            <span class="splash-word" style="animation-delay: 3.8s;">කළයුත්ත</span>
+            <span class="splash-word" style="animation-delay: 3.8s;">දැන</span>
+            <span class="splash-word" style="animation-delay: 3.8s;">එය</span>
+            <span class="splash-word" style="animation-delay: 3.8s;">කරනු</span>
+        </div>
+    </div>
+
+    <!-- Decorative School Borders -->
+    <div class="fixed top-0 left-0 h-full flex z-50 pointer-events-none">
+        <div class="w-1 md:w-3 h-full bg-schoolGold opacity-90 shadow-[2px_0_10px_rgba(0,0,0,0.3)]"></div>
+        <div class="w-1 md:w-3 h-full bg-schoolGreen opacity-90"></div>
+    </div>
+    <div class="fixed top-0 right-0 h-full flex z-50 pointer-events-none">
+        <div class="w-1 md:w-3 h-full bg-schoolGreen opacity-90"></div>
+        <div class="w-1 md:w-3 h-full bg-schoolGold opacity-90 shadow-[-2px_0_10px_rgba(0,0,0,0.3)]"></div>
+    </div>
+
+    <!-- Top Utility Bar -->
+    <div class="bg-darkGreen text-white text-xs py-2 px-4 sm:px-10 flex justify-between items-center border-b border-schoolGold/30 relative z-40">
+        <div class="flex items-center space-x-4 pl-4 md:pl-8">
+            <span><i class="fas fa-map-marker-alt text-schoolGold mr-1"></i>Gammana Road, Maharagama 10280, Sri Lanka</span>
+            <span class="hidden md:inline"><i class="fas fa-phone text-schoolGold mr-1"></i> 011 285 0054</span>
+            <span class="hidden lg:inline"><i class="fas fa-envelope text-schoolGold mr-1"></i> maharagamacentral@gmail.com</span>
+        </div>
+        <div class="flex items-center space-x-3 pr-4 md:pr-8">
+            <span class="hidden sm:inline text-schoolGold font-medium tracking-wide">CENSUS: 0398 (1AB)</span>
+            <a href="#" class="hover:text-schoolGold transition duration-300 transform hover:scale-110 inline-block"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="hover:text-schoolGold transition duration-300 transform hover:scale-110 inline-block"><i class="fab fa-youtube"></i></a>
+            <a href="mailto:maharagamacentral@gmail.com" class="hover:text-schoolGold transition duration-300 transform hover:scale-110 inline-block"><i class="fas fa-envelope"></i></a>
+        </div>
+    </div>
+
+    <!-- Transparent Dark Green Sticky Header -->
+    <header id="main-header" class="sticky top-0 z-40 bg-darkGreen/85 backdrop-blur-md shadow-lg border-b-2 border-schoolGold/50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3 cursor-pointer transition duration-300 transform hover:scale-105 origin-left pl-2 md:pl-4" onclick="switchPage('home')">
+                <img src="logo.jpg" alt="Central College Maharagama Crest" class="w-14 h-14 object-contain bg-white rounded-full p-1 shadow">
+                <div>
+                    <h1 class="font-serif text-xl md:text-2xl font-bold text-white leading-tight tracking-wide drop-shadow">CENTRAL COLLEGE MAHARAGAMA</h1>
+                    <p class="text-[10px] md:text-xs text-schoolGold font-semibold uppercase tracking-widest mt-0.5">Maharagama • Western Province</p>
+                </div>
+            </div>
+
+            <nav class="hidden lg:flex space-x-1 xl:space-x-4 font-semibold text-sm pr-2 md:pr-4">
+                <button onclick="switchPage('home')" id="nav-home" class="nav-btn px-3 py-2 rounded text-white border-b-2 border-schoolGold transition duration-300 transform hover:scale-110">Home</button>
+                <button onclick="switchPage('news')" id="nav-news" class="nav-btn px-3 py-2 rounded text-gray-200 hover:text-white transition duration-300 transform hover:scale-110">News</button>
+                <button onclick="switchPage('academics')" id="nav-academics" class="nav-btn px-3 py-2 rounded text-gray-200 hover:text-white transition duration-300 transform hover:scale-110">Academics</button>
+                <button onclick="switchPage('sports')" id="nav-sports" class="nav-btn px-3 py-2 rounded text-gray-200 hover:text-white transition duration-300 transform hover:scale-110">Sports</button>
+                <button onclick="switchPage('clubs')" id="nav-clubs" class="nav-btn px-3 py-2 rounded text-gray-200 hover:text-white transition duration-300 transform hover:scale-110">Clubs & Societies</button>
+                <button onclick="switchPage('about')" id="nav-about" class="nav-btn px-3 py-2 rounded text-gray-200 hover:text-white transition duration-300 transform hover:scale-110">About Us</button>
+            </nav>
+
+            <button onclick="toggleMobileMenu()" class="lg:hidden text-schoolGold focus:outline-none text-2xl transition duration-300 transform hover:scale-110 pr-4">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <div id="mobile-menu" class="hidden lg:hidden bg-darkGreen/95 backdrop-blur border-t border-schoolGold/30 px-6 pt-3 pb-5 space-y-2">
+            <button onclick="switchPage('home'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded font-semibold text-white">Home</button>
+            <button onclick="switchPage('news'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded font-semibold text-gray-200">News</button>
+            <button onclick="switchPage('academics'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded font-semibold text-gray-200">Academics</button>
+            <button onclick="switchPage('sports'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded font-semibold text-gray-200">Sports</button>
+            <button onclick="switchPage('clubs'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded font-semibold text-gray-200">Clubs & Societies</button>
+            <button onclick="switchPage('about'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded font-semibold text-gray-200">About Us</button>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+
+        <!-- ================= PAGE 1: HOME ================= -->
+        <section id="page-home" class="page-section">
+            <div class="hero-bg text-white px-4 text-center w-full -mt-20 pt-20">
+                <div class="max-w-5xl mx-auto flex flex-col items-center">
+                    <h2 class="font-serif text-2xl md:text-4xl italic tracking-wide mb-3 drop-shadow-lg text-gray-200">Welcome to</h2>
+                    <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl font-bold mb-4 tracking-tight drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)] text-white">Central College<br>Maharagama</h1>
+                    
+                    <p class="font-sinhala text-xl md:text-2xl text-schoolGold font-semibold mb-3 tracking-wide drop-shadow-md">
+                        කළයුත්ත දැන එය කරනු
+                    </p>
+                    <p class="text-sm md:text-lg text-gray-200 font-bold tracking-widest max-w-2xl mx-auto drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] mb-10 uppercase">
+                        A Generation That Conquers The World With Good Technology
+                    </p>
+                    
+                    <div class="flex flex-wrap justify-center gap-4 mt-2">
+                        <button onclick="switchPage('about')" class="border-2 border-white text-white font-bold px-8 py-3 hover:bg-white hover:text-darkGreen transition duration-300 tracking-wider shadow-lg bg-black/20 rounded-full transform hover:scale-110">DISCOVER MORE</button>
+                        <button onclick="switchPage('academics')" class="border-2 border-schoolGold text-schoolGold font-bold px-8 py-3 hover:bg-schoolGold hover:text-darkGreen transition duration-300 tracking-wider shadow-lg bg-black/20 rounded-full transform hover:scale-110">EXPLORE CURRICULUM</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-8 sm:px-12 py-16 mt-6">
+                <div class="grid md:grid-cols-2 gap-12 items-center mb-20">
+                    <div>
+                        <h2 class="font-serif text-4xl font-bold text-schoolGreen mb-6 border-l-4 border-schoolGold pl-4">Welcome to Our College</h2>
+                        <p class="text-gray-600 leading-relaxed mb-4 text-justify">
+                            Central College Maharagama stands as the singular Type 1AB Government  School within the Maharagama Divisional Secretariat and electorate, situated across a picturesque 4.5 acre campus along Gammana Road. Established upon historical grounds dating back to World War II and officially chartered as a Central College in 1986, the college is home to over 1,100 students and an active faculty of 74 dedicated educators.
+                        </p>
+                        <p class="text-gray-600 leading-relaxed mb-6 text-justify">
+                            With our distinguished motto, "කළයුත්ත දැන එය කරනු" (Know what to do and do it), we provide complete secondary and advanced level education across Technology, Science, Commerce, Arts, and the 13-Year Guaranteed Education program. Our students consistently excel in all-island aesthetic competitions, national sports championships, and state examinations.
+                        </p>
+                        <button onclick="switchPage('about')" class="text-schoolGreen font-bold hover:underline flex items-center transition duration-300 transform hover:scale-105 origin-left">Explore our college history and leadership <i class="fas fa-arrow-right ml-2"></i></button>
+                    </div>
+                    
+                    <div class="bg-white p-8 rounded shadow-xl border-t-4 border-schoolGreen transform hover:-translate-y-1 transition duration-300">
+                        <div class="flex items-center space-x-4 mb-6">
+                            <div class="w-16 h-16 bg-schoolGreen/10 rounded-full flex items-center justify-center text-schoolGreen text-2xl font-bold">
+                                <i class="fas fa-bullseye"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-serif text-2xl font-bold text-schoolGreen">Vision & Mission</h3>
+                                <p class="font-sinhala text-xs text-gray-500 tracking-widest mt-1">දැක්ම සහ මෙහෙවර</p>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <div>
+                                <h4 class="font-bold text-schoolGreen text-sm uppercase tracking-wider mb-2">Our Vision (දැක්ම)</h4>
+                                <p class="font-sinhala text-gray-800 text-sm mt-1 italic font-medium leading-relaxed mb-2">
+                                    "නැණ ගුණ දම් සපිරි තාක්ෂණයෙන් ලොව දිනන පරපුරක්"
+                                </p>
+                                <p class="text-gray-600 text-sm leading-relaxed border-l-2 border-schoolGold pl-3">
+                                    "A generation that conquers the world with technology, endowed with wisdom and virtue."
+                                </p>
+                            </div>
+                            <hr class="border-gray-100">
+                            <div>
+                                <h4 class="font-bold text-schoolGreen text-sm uppercase tracking-wider mb-2">Our Mission (මෙහෙවර)</h4>
+                                <p class="font-sinhala text-gray-800 text-sm mt-1 italic font-medium leading-relaxed mb-2">
+                                    "නුවණින් පරිපූර්ණ වූත් ගුණ දහමින් වැඩුණු, නව තාක්ෂණයෙන් යුත්, ගෝලීය අර්බුදයන් හමුවේ නොසැලෙන පරපුරක් දැයට දායාද කිරීම."
+                                </p>
+                                <p class="text-gray-600 text-sm leading-relaxed border-l-2 border-schoolGold pl-3">
+                                    "To gift to the nation a generation complete in wisdom, nurtured in virtue, equipped with modern technology, and unwavering in the face of global crises."
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Motto Section -->
+                <div class="max-w-5xl mx-auto px-4 mb-24 text-center">
+                    <div class="w-16 h-1 bg-schoolGold mx-auto mt-4 mb-8"></div>
+                    <h3 class="font-serif text-3xl font-bold text-schoolGreen mb-8">Our Motto</h3>
+                    <div class="bg-darkGreen rounded-3xl overflow-hidden shadow-2xl inline-block w-full md:w-4/5 mx-auto border-4 border-schoolGold transform hover:scale-[1.02] transition duration-500">
+                        <img src="motto.jpg" alt="School Motto - කළයුත්ත දැන එය කරනු" class="w-full h-auto object-cover">
+                    </div>
+                </div>
+
+                <!-- Vertical Large Quick Links -->
+                <div class="max-w-5xl mx-auto px-4 mb-16 space-y-8">
+                    <div class="text-center mb-10">
+                        <h3 class="font-serif text-3xl font-bold text-schoolGreen">Explore Central College</h3>
+                        <div class="w-16 h-1 bg-schoolGold mx-auto mt-4 mb-8"></div>
+                    </div>
+
+                    <div onclick="switchPage('news')" class="bg-white rounded-3xl p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.12)] transition-all duration-300 cursor-pointer flex flex-col md:flex-row items-center gap-8 border border-gray-100 group transform hover:scale-105">
+                        <div class="w-24 h-24 md:w-32 md:h-32 bg-schoolGreen/10 rounded-full flex items-center justify-center text-schoolGreen text-4xl md:text-5xl group-hover:bg-schoolGreen group-hover:text-white transition duration-500 flex-shrink-0">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                        <div class="text-center md:text-left">
+                            <h4 class="font-serif font-bold text-2xl md:text-3xl mb-3 text-gray-800">College News & Events</h4>
+                            <p class="text-gray-600 mb-5 leading-relaxed text-sm md:text-base">Stay updated with our G.C.E. O/L milestones, All-Island tournament victories, English day dramas, and term notices.</p>
+                            <span class="inline-flex text-schoolGreen text-sm font-bold uppercase tracking-wider items-center group-hover:text-schoolGold transition">Read Bulletins <i class="fas fa-arrow-right ml-2"></i></span>
+                        </div>
+                    </div>
+
+                    <div onclick="switchPage('academics')" class="bg-white rounded-3xl p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.12)] transition-all duration-300 cursor-pointer flex flex-col md:flex-row items-center gap-8 border border-gray-100 group transform hover:scale-105">
+                        <div class="w-24 h-24 md:w-32 md:h-32 bg-yellow-50 rounded-full flex items-center justify-center text-schoolGold text-4xl md:text-5xl group-hover:bg-schoolGold group-hover:text-white transition duration-500 flex-shrink-0 md:order-last">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="text-center md:text-right flex-grow">
+                            <h4 class="font-serif font-bold text-2xl md:text-3xl mb-3 text-gray-800">Academics & Curricula</h4>
+                            <p class="text-gray-600 mb-5 leading-relaxed text-sm md:text-base">From Grade 6 English medium classrooms to five specialized A/L streams with a 92% pass rate in national examinations.</p>
+                            <span class="inline-flex text-schoolGold text-sm font-bold uppercase tracking-wider items-center group-hover:text-schoolGreen transition">View Streams <i class="fas fa-arrow-right ml-2 md:mr-2 md:ml-0 md:order-first rotate-180 md:rotate-0"></i></span>
+                        </div>
+                    </div>
+
+                    <div onclick="switchPage('sports')" class="bg-white rounded-3xl p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.12)] transition-all duration-300 cursor-pointer flex flex-col md:flex-row items-center gap-8 border border-gray-100 group transform hover:scale-105">
+                        <div class="w-24 h-24 md:w-32 md:h-32 bg-schoolGreen/10 rounded-full flex items-center justify-center text-schoolGreen text-4xl md:text-5xl group-hover:bg-schoolGreen group-hover:text-white transition duration-500 flex-shrink-0">
+                            <i class="fas fa-running"></i>
+                        </div>
+                        <div class="text-center md:text-left">
+                            <h4 class="font-serif font-bold text-2xl md:text-3xl mb-3 text-gray-800">Sports & Athletics</h4>
+                            <p class="text-gray-600 mb-5 leading-relaxed text-sm md:text-base">Home to the All-Island Rugby champions, Western Province Football title holders, Volleyball, Chess, and Track & Field champions.</p>
+                            <span class="inline-flex text-schoolGreen text-sm font-bold uppercase tracking-wider items-center group-hover:text-schoolGold transition">See Achievements <i class="fas fa-arrow-right ml-2"></i></span>
+                        </div>
+                    </div>
+
+                    <div onclick="switchPage('clubs')" class="bg-white rounded-3xl p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.12)] transition-all duration-300 cursor-pointer flex flex-col md:flex-row items-center gap-8 border border-gray-100 group transform hover:scale-105">
+                        <div class="w-24 h-24 md:w-32 md:h-32 bg-yellow-50 rounded-full flex items-center justify-center text-schoolGold text-4xl md:text-5xl group-hover:bg-schoolGold group-hover:text-white transition duration-500 flex-shrink-0 md:order-last">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="text-center md:text-right flex-grow">
+                            <h4 class="font-serif font-bold text-2xl md:text-3xl mb-3 text-gray-800">Clubs & Societies</h4>
+                            <p class="text-gray-600 mb-5 leading-relaxed text-sm md:text-base">All-Island Dance and Raagadhari Choir champions, English Drama, Red Cross First Aid, and modern IT innovations.</p>
+                            <span class="inline-flex text-schoolGold text-sm font-bold uppercase tracking-wider items-center group-hover:text-schoolGreen transition">Join Societies <i class="fas fa-arrow-right ml-2 md:mr-2 md:ml-0 md:order-first rotate-180 md:rotate-0"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 2: NEWS ================= -->
+        <section id="page-news" class="page-section hidden max-w-7xl mx-auto px-8 sm:px-12 py-12">
+            <div class="border-b border-gray-200 pb-5 mb-8 flex justify-between items-end">
+                <div>
+                    <h2 class="font-serif text-4xl font-extrabold text-schoolGreen mt-1">College News & Bulletins</h2>
+                    <p class="text-sm text-gray-500 mt-2">Latest verified updates, competition results, and academic notices.</p>
+                </div>
+            </div>
+
+            <div id="news-card-container" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- NEWS CARD 1 -->
+                <div class="bg-white rounded shadow overflow-hidden border-t-2 border-schoolGold group transform hover:-translate-y-1 transition duration-300 flex flex-col">
+                    <div class="w-full h-48 bg-schoolGreen/10 flex items-center justify-center text-schoolGreen text-4xl overflow-hidden">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col">
+                        <span class="text-xs font-bold text-schoolGold uppercase tracking-wider">Sports Milestone • 2026</span>
+                        <h4 class="font-serif text-xl font-bold text-schoolGreen mt-2 mb-3">All-Island Rugby Champions</h4>
+                        <p class="text-sm text-gray-600 mb-6 leading-relaxed flex-grow">Central College Maharagama emerged as All-Island Champions in the Under-14 Rugby Tournament and clinched top honors in the national Inter-School Rugby fixtures.</p>
+                        <button onclick="openNewsModal('All-Island Rugby Champions', 'Sports Milestone • 2026', 'Central College Maharagama has proudly emerged as the undisputed All-Island Champions in the Under-14 Rugby Tournament. Following an intense season, the team successfully clinched top honors in the national Inter-School Rugby fixtures, showcasing exceptional teamwork, discipline, and endurance. We congratulate the athletes and the coaching staff for bringing this prestigious trophy home.', [])" class="text-schoolGreen text-sm font-bold uppercase tracking-wider inline-flex items-center group-hover:text-schoolGold transition self-start cursor-pointer transform hover:scale-105">View Results <i class="fas fa-arrow-right ml-1"></i></button>
+                    </div>
+                </div>
+
+                <!-- NEWS CARD 2 -->
+                <div class="bg-white rounded shadow overflow-hidden border-t-2 border-schoolGold group transform hover:-translate-y-1 transition duration-300 flex flex-col">
+                    <div class="w-full h-48 bg-schoolGold/10 flex items-center justify-center text-schoolGold text-4xl overflow-hidden">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col">
+                        <span class="text-xs font-bold text-schoolGold uppercase tracking-wider">Academics Milestone</span>
+                        <h4 class="font-serif text-xl font-bold text-schoolGreen mt-2 mb-3">G.C.E. O/L Pass Rate Surpasses 92%</h4>
+                        <p class="text-sm text-gray-600 mb-6 leading-relaxed flex-grow">Official institutional audits reflect an outstanding leap in Ordinary Level qualifying rates, climbing steadily from 62% in 2022 to an impressive 92% qualification benchmark.</p>
+                        <button onclick="openNewsModal('G.C.E. O/L Pass Rate Surpasses 92%', 'Academics Milestone', 'Official institutional audits and the latest Ministry of Education reports confirm an outstanding leap in our Ordinary Level qualifying rates. The college has climbed steadily from a 62% pass rate in 2022 to a record-breaking 92% Advanced Level qualification benchmark in 2025. Furthermore, several subjects including Business & Accounting, Geography, Oriental Music, Art, Dance, and Drama recorded a phenomenal 100% pass rate. We commend our dedicated academic staff and the resilient student body.', [])" class="text-schoolGreen text-sm font-bold uppercase tracking-wider inline-flex items-center group-hover:text-schoolGold transition self-start cursor-pointer transform hover:scale-105">Read Full Report <i class="fas fa-arrow-right ml-1"></i></button>
+                    </div>
+                </div>
+
+                <!-- NEWS CARD 3 -->
+                <div class="bg-white rounded shadow overflow-hidden border-t-2 border-schoolGold group transform hover:-translate-y-1 transition duration-300 flex flex-col">
+                    <div class="w-full h-48 bg-schoolGreen/10 flex items-center justify-center text-schoolGreen text-4xl overflow-hidden">
+                        <i class="fas fa-theater-masks"></i>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col">
+                        <span class="text-xs font-bold text-schoolGold uppercase tracking-wider">Aesthetic Success</span>
+                        <h4 class="font-serif text-xl font-bold text-schoolGreen mt-2 mb-3">All-Island Dance & Choir Victories</h4>
+                        <p class="text-sm text-gray-600 mb-6 leading-relaxed flex-grow">Centralian performers clinched the All-Island Dance Championship and Raagadhari Choir Championship, following successive English Day drama trophies.</p>
+                        <button onclick="openNewsModal('All-Island Dance & Choir Victories', 'Aesthetic Success', 'Centralian performers have once again dominated the national aesthetic stage. The college secured the prestigious All-Island Dance Championship for 2026, alongside winning the highly coveted Raagadhari Vocal Choir Championship. These victories come shortly after the English Literary & Drama Association secured Divisional 1st Place and Zonal 1st Place in the English Day competitions. The Aesthetic department continues to be a shining beacon of Centralian pride.', [])" class="text-schoolGreen text-sm font-bold uppercase tracking-wider inline-flex items-center group-hover:text-schoolGold transition self-start cursor-pointer transform hover:scale-105">Read More <i class="fas fa-arrow-right ml-1"></i></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 3: ACADEMICS ================= -->
+        <section id="page-academics" class="page-section hidden max-w-7xl mx-auto px-8 sm:px-12 py-12">
+            <div class="border-b border-gray-200 pb-5 mb-8">
+                <h2 class="font-serif text-4xl font-extrabold text-schoolGreen mt-1">Academic Programs</h2>
+                <p class="text-sm text-gray-500 mt-2">Comprehensive curriculum certified by the Ministry of Education (Type 1AB Institution).</p>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+                <div class="bg-white p-6 rounded shadow border-t-4 border-schoolGreen text-center">
+                    <span class="font-serif block text-4xl font-extrabold text-schoolGreen">1,116</span>
+                    <span class="text-xs text-gray-500 uppercase tracking-widest font-semibold mt-2 block">Enrolled Students</span>
+                </div>
+                <div class="bg-white p-6 rounded shadow border-t-4 border-schoolGold text-center">
+                    <span class="font-serif block text-4xl font-extrabold text-schoolGold">74</span>
+                    <span class="text-xs text-gray-500 uppercase tracking-widest font-semibold mt-2 block">Academic Teachers</span>
+                </div>
+                <div class="bg-white p-6 rounded shadow border-t-4 border-schoolGreen text-center">
+                    <span class="font-serif block text-4xl font-extrabold text-schoolGreen">38</span>
+                    <span class="text-xs text-gray-500 uppercase tracking-widest font-semibold mt-2 block">Active Classes</span>
+                </div>
+                <div class="bg-white p-6 rounded shadow border-t-4 border-schoolGold text-center">
+                    <span class="font-serif block text-4xl font-extrabold text-schoolGold">92.0%</span>
+                    <span class="text-xs text-gray-500 uppercase tracking-widest font-semibold mt-2 block">O/L Pass Rate (2025)</span>
+                </div>
+            </div>
+
+            <!-- Academic Legacy -->
+            <div class="bg-white rounded shadow p-8 mb-12 border-l-4 border-schoolGreen">
+                <h3 class="font-serif text-2xl font-bold text-schoolGreen mb-4">Academic Structure & Vision</h3>
+                <p class="text-gray-600 leading-relaxed text-justify mb-4">
+                    Central College Maharagama accommodates secondary education from Grade 6 through Grade 11 (including specialized English medium classes in Grade 6) and advanced Collegiate studies across Grades 12 and 13. With classrooms equipped with interactive smart boards and an active science laboratory network, the college is a pioneer in technical and vocational empowerment.
+                </p>
+            </div>
+
+            <!-- Available Subjects -->
+            <h3 class="font-serif text-3xl font-bold text-schoolGreen mb-6">Advanced Level (A/L) Streams</h3>
+            <div class="grid md:grid-cols-2 gap-8 mb-12">
+                <div class="bg-white p-6 rounded shadow border-t-4 border-schoolGold">
+                    <h4 class="font-serif text-xl font-bold text-schoolGreen mb-3"><i class="fas fa-microchip text-schoolGold mr-2"></i>Technology Stream</h4>
+                    <p class="text-sm text-gray-600 mb-4">Our strongest and most sought-after stream, maintaining high university entrance rates.</p>
+                    <ul class="space-y-2 text-sm text-gray-700 list-disc ml-4 marker:text-schoolGold">
+                        <li>Engineering Technology (ET)</li>
+                        <li>Biosystems Technology (BST)</li>
+                        <li>Science for Technology (SFT)</li>
+                        <li>Information & Communication Technology (ICT)</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white p-6 rounded shadow border-t-4 border-schoolGreen">
+                    <h4 class="font-serif text-xl font-bold text-schoolGreen mb-3"><i class="fas fa-chart-pie text-schoolGreen mr-2"></i>Commerce Stream</h4>
+                    <p class="text-sm text-gray-600 mb-4">Strong academic track with over 70% to 86% pass rates recorded in national exams.</p>
+                    <ul class="space-y-2 text-sm text-gray-700 list-disc ml-4 marker:text-schoolGreen">
+                        <li>Accounting & Business Statistics</li>
+                        <li>Business Studies</li>
+                        <li>Economics</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white p-6 rounded shadow border-t-4 border-schoolGreen">
+                    <h4 class="font-serif text-xl font-bold text-schoolGreen mb-3"><i class="fas fa-book-open text-schoolGreen mr-2"></i>Arts & Humanities Stream</h4>
+                    <p class="text-sm text-gray-600 mb-4">Fostering deep cultural, social, and linguistic excellence.</p>
+                    <ul class="space-y-2 text-sm text-gray-700 list-disc ml-4 marker:text-schoolGreen">
+                        <li>Sinhala & Political Science</li>
+                        <li>Geography & Buddhist Civilization</li>
+                        <li>Logic, Media & Communication Studies</li>
+                        <li>Oriental Music, Classical Dance, Drama & Art</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white p-6 rounded shadow border-t-4 border-schoolGold">
+                    <h4 class="font-serif text-xl font-bold text-schoolGreen mb-3"><i class="fas fa-tools text-schoolGold mr-2"></i>13-Year Guaranteed Education (Vocational)</h4>
+                    <p class="text-sm text-gray-600 mb-4">Practical NVQ-aligned career pathways empowering every school leaver with employment skills.</p>
+                    <ul class="space-y-2 text-sm text-gray-700 list-disc ml-4 marker:text-schoolGold">
+                        <li>Tourism & Hospitality Studies</li>
+                        <li>Automobile & Mechanical Studies</li>
+                        <li>Computer Hardware, Web Development & Networking</li>
+                        <li>Electrical & Electronic Technology Studies</li>
+                        <li>Textile, Fashion Design & Landscaping</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Significant Achievements -->
+            <div class="bg-schoolGreen text-white p-8 rounded shadow">
+                <h3 class="font-serif text-2xl font-bold text-schoolGold mb-4">National Examination Benchmarks</h3>
+                <ul class="space-y-3 text-sm text-gray-100 list-disc ml-6 marker:text-schoolGold">
+                    <li class="pl-2 text-base leading-relaxed"><strong>G.C.E. O/L 2025:</strong> Achieved a 92.0% qualification rate for Advanced Level studies with zero failure rates across all subjects.</li>
+                    <li class="pl-2 text-base leading-relaxed"><strong>100% Subject Pass Benchmarks:</strong> Consistently achieved 100% pass rates in O/L Business & Accounting, Geography, Oriental Music, Art, Dance, and Drama.</li>
+                    <li class="pl-2 text-base leading-relaxed"><strong>A/L University Eligibility:</strong> Consistent 70%+ university qualification rate achieved across the Technology and Commerce faculties.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 4: SPORTS ================= -->
+        <section id="page-sports" class="page-section hidden max-w-7xl mx-auto px-8 sm:px-12 py-12">
+            <div class="border-b border-gray-200 pb-5 mb-8">
+                <h2 class="font-serif text-4xl font-extrabold text-schoolGreen mt-1">Sports & Athletic Excellence</h2>
+                <p class="text-sm text-gray-500 mt-2">Nurturing national competitors with discipline, strength, and team pride.</p>
+            </div>
+
+            <!-- SPORTS IMAGE SLIDER BANNER (5 IMAGES) -->
+            <div class="relative w-full h-96 md:h-[650px] lg:h-[750px] rounded-3xl overflow-hidden mb-12 shadow-xl border-4 border-schoolGold bg-gray-200">                
+                <!-- Slide 1 -->
+                <div class="sport-slide absolute inset-0 transition-opacity duration-1000 opacity-100">
+                    <img src="sports_banner1.jpg" alt="Rugby Team" class="w-full h-full object-cover" onerror="this.style.display='none'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end">
+                        <p class="text-white p-6 font-serif text-2xl md:text-3xl font-bold tracking-wide drop-shadow-md"></p>
+                    </div>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="sport-slide absolute inset-0 transition-opacity duration-1000 opacity-0">
+                    <img src="sports_banner2.jpg" alt="Athletics" class="w-full h-full object-cover" onerror="this.style.display='none'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end">
+                        <p class="text-white p-6 font-serif text-2xl md:text-3xl font-bold tracking-wide drop-shadow-md"></p>
+                    </div>
+                </div>
+
+                <!-- Slide 3 -->
+                <div class="sport-slide absolute inset-0 transition-opacity duration-1000 opacity-0">
+                    <img src="sports_banner3.jpg" alt="Football" class="w-full h-full object-cover" onerror="this.style.display='none'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end">
+                        <p class="text-white p-6 font-serif text-2xl md:text-3xl font-bold tracking-wide drop-shadow-md"></p>
+                    </div>
+                </div>
+
+                <!-- Slide 4 -->
+                <div class="sport-slide absolute inset-0 transition-opacity duration-1000 opacity-0">
+                    <img src="sports_banner4.jpg" alt="Volleyball" class="w-full h-full object-cover" onerror="this.style.display='none'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end">
+                        <p class="text-white p-6 font-serif text-2xl md:text-3xl font-bold tracking-wide drop-shadow-md"></p>
+                    </div>
+                </div>
+
+                <!-- Slide 5 -->
+                <div class="sport-slide absolute inset-0 transition-opacity duration-1000 opacity-0">
+                    <img src="sports_banner5.jpg" alt="Chess" class="w-full h-full object-cover" onerror="this.style.display='none'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end">
+                        <p class="text-white p-6 font-serif text-2xl md:text-3xl font-bold tracking-wide drop-shadow-md"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-darkGreen text-white rounded shadow p-8 border-l-4 border-schoolGold mb-14">
+                <h3 class="font-serif text-2xl font-bold text-schoolGold mb-4">Recent Championship Highlights (2023 - 2026)</h3>
+                <ul id="sports-highlights-list" class="space-y-3 text-gray-200 list-disc ml-6 marker:text-schoolGold text-sm md:text-base">
+                    <li class="pl-2 leading-relaxed"><strong>All-Island Rugby:</strong> Champions of the All-Island Inter-School U-14 Tournament (2026) and Inter-School Bowl Champions (2024).</li>
+                    <li class="pl-2 leading-relaxed"><strong>Football:</strong> Western Provincial Sports Tournament Champions (2026) and All-Island U-20 Girls Champions (2024).</li>
+                    <li class="pl-2 leading-relaxed"><strong>Volleyball:</strong> Western Province U-20 Girls Champions & Boys Runners-Up (2026).</li>
+                    <li class="pl-2 leading-relaxed"><strong>Athletics (Track & Field):</strong> Zonal 1st place in Girls 5000m & 3000m; Boys 5000m 1st place; National Youth Games Medals in 1500m & 3000m.</li>
+                    <li class="pl-2 leading-relaxed"><strong>Chess:</strong> Multiple Zonal Blitz & Classical titles; 3 players selected for Provincial championships (2026).</li>
+                </ul>
+            </div>
+
+            <h3 class="font-serif text-3xl font-bold text-schoolGreen mb-8 text-center">Featured Sports Disciplines</h3>
+            
+            <div id="sports-card-container" class="max-w-5xl mx-auto space-y-8 mb-12">
+                <!-- SPORT CARD 1: RUGBY (LEFT IMAGE) -->
+                <div class="bg-white rounded-3xl p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.12)] transition-all duration-300 flex flex-col md:flex-row items-center gap-8 border border-gray-100 group transform hover:-translate-y-1">
+                    <div class="w-full md:w-2/5 h-64 bg-schoolGreen/10 rounded-2xl overflow-hidden flex items-center justify-center text-schoolGreen text-6xl flex-shrink-0 group-hover:scale-105 transition duration-500">
+                        <i class="fas fa-football-ball"></i>
+                    </div>
+                    <div class="text-center md:text-left flex-grow">
+                        <h4 class="font-serif font-bold text-2xl md:text-3xl mb-3 text-gray-800">Centralian Rugby</h4>
+                        <p class="text-gray-600 mb-5 leading-relaxed text-sm md:text-base">
+                            Rugby is one of the premier sporting flagships of Central College Maharagama. Our teams have swept the All-Island Under-14 Trophy, Sri Lanka Schools U-19 Bowl Championship, and U-18 Shield honors.
+                        </p>
+                        <p class="font-bold text-schoolGreen uppercase tracking-wider text-xs">Division: <span class="text-gray-600 font-normal">All-Island Tournament Champions</span></p>
+                    </div>
+                </div>
+
+                <!-- SPORT CARD 2: FOOTBALL (RIGHT IMAGE) -->
+                <div class="bg-white rounded-3xl p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.12)] transition-all duration-300 flex flex-col md:flex-row items-center gap-8 border border-gray-100 group transform hover:-translate-y-1">
+                    <div class="w-full md:w-2/5 h-64 bg-yellow-50 rounded-2xl overflow-hidden flex items-center justify-center text-schoolGold text-6xl flex-shrink-0 group-hover:scale-105 transition duration-500 md:order-last">
+                        <i class="fas fa-futbol"></i>
+                    </div>
+                    <div class="text-center md:text-right flex-grow">
+                        <h4 class="font-serif font-bold text-2xl md:text-3xl mb-3 text-gray-800">Football & Futsal</h4>
+                        <p class="text-gray-600 mb-5 leading-relaxed text-sm md:text-base">
+                            With our spacious grounds, soccer has flourished at Central College Maharagama, producing Western Provincial tournament champions as well as All-Island national girl's tournament trophy winners.
+                        </p>
+                        <p class="font-bold text-schoolGold uppercase tracking-wider text-xs">Division: <span class="text-gray-600 font-normal">Western Provincial & Zonal Champions</span></p>
+                    </div>
+                </div>
+
+                <!-- SPORT CARD 3: VOLLEYBALL (LEFT IMAGE) -->
+                <div class="bg-white rounded-3xl p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.12)] transition-all duration-300 flex flex-col md:flex-row items-center gap-8 border border-gray-100 group transform hover:-translate-y-1">
+                    <div class="w-full md:w-2/5 h-64 bg-schoolGreen/10 rounded-2xl overflow-hidden flex items-center justify-center text-schoolGreen text-6xl flex-shrink-0 group-hover:scale-105 transition duration-500">
+                        <i class="fas fa-volleyball-ball"></i>
+                    </div>
+                    <div class="text-center md:text-left flex-grow">
+                        <h4 class="font-serif font-bold text-2xl md:text-3xl mb-3 text-gray-800">Volleyball</h4>
+                        <p class="text-gray-600 mb-5 leading-relaxed text-sm md:text-base">
+                            The national sport of Sri Lanka thrives at Central College, with our Under-20 Girls securing championship status and the Boys team claiming runner-up medals in major zonal fixtures.
+                        </p>
+                        <p class="font-bold text-schoolGreen uppercase tracking-wider text-xs">Division: <span class="text-gray-600 font-normal">U-20 Champions</span></p>
+                    </div>
+                </div>
+
+                <!-- SPORT CARD 4: ATHLETICS (RIGHT IMAGE) -->
+                <div class="bg-white rounded-3xl p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.12)] transition-all duration-300 flex flex-col md:flex-row items-center gap-8 border border-gray-100 group transform hover:-translate-y-1">
+                    <div class="w-full md:w-2/5 h-64 bg-yellow-50 rounded-2xl overflow-hidden flex items-center justify-center text-schoolGold text-6xl flex-shrink-0 group-hover:scale-105 transition duration-500 md:order-last">
+                        <i class="fas fa-stopwatch"></i>
+                    </div>
+                    <div class="text-center md:text-right flex-grow">
+                        <h4 class="font-serif font-bold text-2xl md:text-3xl mb-3 text-gray-800">Track & Field Athletics</h4>
+                        <p class="text-gray-600 mb-5 leading-relaxed text-sm md:text-base">
+                            Our athletes consistently dominate the tracks, securing 1st place finishes in the 5000m and 3000m runs at the Zonal Athletics Meets, and placing high in the National Youth Games for the 1500m events.
+                        </p>
+                        <p class="font-bold text-schoolGold uppercase tracking-wider text-xs">Division: <span class="text-gray-600 font-normal">National & Zonal Medalists</span></p>
+                    </div>
+                </div>
+
+                <!-- SPORT CARD 5: CHESS (LEFT IMAGE) -->
+                <div class="bg-white rounded-3xl p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.12)] transition-all duration-300 flex flex-col md:flex-row items-center gap-8 border border-gray-100 group transform hover:-translate-y-1">
+                    <div class="w-full md:w-2/5 h-64 bg-schoolGreen/10 rounded-2xl overflow-hidden flex items-center justify-center text-schoolGreen text-6xl flex-shrink-0 group-hover:scale-105 transition duration-500">
+                        <i class="fas fa-chess-knight"></i>
+                    </div>
+                    <div class="text-center md:text-left flex-grow">
+                        <h4 class="font-serif font-bold text-2xl md:text-3xl mb-3 text-gray-800">Centralian Chess Club</h4>
+                        <p class="text-gray-600 mb-5 leading-relaxed text-sm md:text-base">
+                            Building strategic minds, the Chess team has brought home Zonal Blitz Runners-Up titles, and multiple students have successfully qualified for the Provincial-level individual championships.
+                        </p>
+                        <p class="font-bold text-schoolGreen uppercase tracking-wider text-xs">Division: <span class="text-gray-600 font-normal">Zonal & Provincial Tier</span></p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= PAGE 5: CLUBS & SOCIETIES ================= -->
+        <section id="page-clubs" class="page-section hidden max-w-7xl mx-auto px-8 sm:px-12 py-12">
+            <div class="border-b border-gray-200 pb-5 mb-8">
+                <h2 class="font-serif text-4xl font-extrabold text-schoolGreen mt-1">Clubs & Societies</h2>
+                <p class="text-sm text-gray-500 mt-2">Developing character, artistic talent, leadership, and technical innovation.</p>
+            </div>
+
+            <div class="bg-white rounded shadow p-8 mb-16 border-l-4 border-schoolGreen">
+                <h3 class="font-serif text-2xl font-bold text-schoolGreen mb-4">Extracurricular Culture</h3>
+                <p class="text-gray-600 leading-relaxed mb-6 text-justify">
+                    Beyond academics, Central College Maharagama provides active societies allowing students to discover their creative voice, social responsibility, and technical mindset. Participation in these clubs helps shape well-rounded, empathetic citizens capable of conquering global challenges.
+                </p>
+                <div class="flex flex-wrap gap-3 mt-4">
+                    <span class="bg-gray-100 text-schoolGreen text-xs font-semibold px-4 py-2 rounded-full border border-gray-200">Aesthetic & Performing Arts Society</span>
+                    <span class="bg-gray-100 text-schoolGreen text-xs font-semibold px-4 py-2 rounded-full border border-gray-200">English Literary & Drama Association</span>
+                    <span class="bg-gray-100 text-schoolGreen text-xs font-semibold px-4 py-2 rounded-full border border-gray-200">Visual Arts & Fine Arts Club</span>
+                    <span class="bg-gray-100 text-schoolGreen text-xs font-semibold px-4 py-2 rounded-full border border-gray-200">Social Science Society</span>
+                    <span class="bg-gray-100 text-schoolGreen text-xs font-semibold px-4 py-2 rounded-full border border-gray-200">Red Cross & First Aid Unit</span>
+                </div>
+            </div>
+
+            <h3 class="font-serif text-3xl font-bold text-schoolGreen mb-6 text-center">Featured Societies</h3>
+            
+            <div id="clubs-card-container" class="max-w-5xl mx-auto space-y-8 mb-12">
+                <!-- CLUB 1: Aesthetic (LEFT IMAGE) -->
+                <div class="bg-white rounded-3xl p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.12)] transition-all duration-300 flex flex-col md:flex-row items-center gap-8 border border-gray-100 group transform hover:-translate-y-1">
+                    <div class="w-full md:w-2/5 h-64 bg-schoolGreen/10 rounded-2xl overflow-hidden flex items-center justify-center text-schoolGreen text-6xl flex-shrink-0 group-hover:scale-105 transition duration-500">
+                        <i class="fas fa-guitar"></i>
+                    </div>
+                    <div class="text-center md:text-left flex-grow">
+                        <h4 class="font-serif font-bold text-2xl md:text-3xl mb-3 text-gray-800">Aesthetic & Performing Arts Society</h4>
+                        <p class="text-gray-600 mb-6 leading-relaxed text-sm md:text-base">
+                            A cornerstone of Centralian pride. Our artists won the All-Island Dance Championship (2026), the All-Island Raagadhari Choir Singing Championship, and maintain a 100% O/L pass rate in Aesthetic subjects.
+                        </p>
+                        <div class="bg-gray-50 p-5 rounded border border-gray-100 text-sm text-gray-700 space-y-2 inline-block text-left w-full">
+                            <p class="font-bold text-schoolGreen uppercase tracking-wider text-xs mb-3 border-b pb-2">Accreditations</p>
+                            <p><span class="font-semibold text-schoolGold">Dance Section:</span> All-Island Champions (2026)</p>
+                            <p><span class="font-semibold text-schoolGold">Choir Section:</span> Raagadhari Vocal Championship Winners</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CLUB 2: English Literary & Drama (RIGHT IMAGE) -->
+                <div class="bg-white rounded-3xl p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.12)] transition-all duration-300 flex flex-col md:flex-row items-center gap-8 border border-gray-100 group transform hover:-translate-y-1">
+                    <div class="w-full md:w-2/5 h-64 bg-yellow-50 rounded-2xl overflow-hidden flex items-center justify-center text-schoolGold text-6xl flex-shrink-0 group-hover:scale-105 transition duration-500 md:order-last">
+                        <i class="fas fa-theater-masks"></i>
+                    </div>
+                    <div class="text-center md:text-right flex-grow">
+                        <h4 class="font-serif font-bold text-2xl md:text-3xl mb-3 text-gray-800">English Literary & Drama Association</h4>
+                        <p class="text-gray-600 mb-6 leading-relaxed text-sm md:text-base">
+                            Empowering students to master the international language through public speaking, drama productions, and creative writing. Champions of Divisional and Zonal English Day competitions for consecutive years.
+                        </p>
+                        <div class="bg-gray-50 p-5 rounded border border-gray-100 text-sm text-gray-700 space-y-2 inline-block text-left w-full md:text-right">
+                            <p class="font-bold text-schoolGreen uppercase tracking-wider text-xs mb-3 border-b pb-2">Accreditations</p>
+                            <p><span class="font-semibold text-schoolGold">English Day:</span> Divisional 1st Place & Zonal 1st Place (2026)</p>
+                            <p><span class="font-semibold text-schoolGold">Drama Competitions:</span> Consecutive First Place Honors</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CLUB 3: Visual Arts (LEFT IMAGE) -->
+                <div class="bg-white rounded-3xl p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.12)] transition-all duration-300 flex flex-col md:flex-row items-center gap-8 border border-gray-100 group transform hover:-translate-y-1">
+                    <div class="w-full md:w-2/5 h-64 bg-schoolGreen/10 rounded-2xl overflow-hidden flex items-center justify-center text-schoolGreen text-6xl flex-shrink-0 group-hover:scale-105 transition duration-500">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <div class="text-center md:text-left flex-grow">
+                        <h4 class="font-serif font-bold text-2xl md:text-3xl mb-3 text-gray-800">Visual Arts & Fine Arts Club</h4>
+                        <p class="text-gray-600 mb-6 leading-relaxed text-sm md:text-base">
+                            Fostering creativity and imagination, the Fine Arts Club allows students to explore various mediums of painting and sculpture. The club proudly holds All-Island 1st Place honors in national art competitions.
+                        </p>
+                        <div class="bg-gray-50 p-5 rounded border border-gray-100 text-sm text-gray-700 space-y-2 inline-block text-left w-full">
+                            <p class="font-bold text-schoolGreen uppercase tracking-wider text-xs mb-3 border-b pb-2">Accreditations</p>
+                            <p><span class="font-semibold text-schoolGold">National Level:</span> All-Island 1st Place (2024)</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= PAGE 6: ABOUT US ================= -->
+        <section id="page-about" class="page-section hidden max-w-7xl mx-auto px-8 sm:px-12 py-12">
+            <div class="border-b border-gray-200 pb-5 mb-8">
+                <h2 class="font-serif text-4xl font-extrabold text-schoolGreen mt-1">About Our College</h2>
+                <p class="text-sm text-gray-500 mt-2">History, governance, student leadership, and administration.</p>
+            </div>
+
+            <!-- School History Overview -->
+            <div class="bg-white rounded shadow p-8 mb-12 border-l-4 border-schoolGold">
+                <h3 class="font-serif text-2xl font-bold text-schoolGreen mb-4">Historical Background & Heritage</h3>
+                <p class="text-gray-600 leading-relaxed text-justify mb-4">
+                    Before 1986, this educational institute was officially known as the <em>Practical School affiliated with the Maharagama Teachers' Training College</em> (මහරගම ගුරු විද්‍යාලයට අනුබද්ධිත ප්‍රායෝගික විද්‍යාලය). Recognizing its vital regional significance and demographic growth, the Ministry of Education (Letter No: 3/G/G/S/F/1/3/7 dated 1986.08.25) formally named and declared the institution as <strong>WP/Jay/Maharagama Central College</strong>.
+                </p>
+                <p class="text-gray-600 leading-relaxed text-justify">
+                    Today, situated adjacent to the National Institute of Education (NIE) and the National College of Education (NCOE), Maharagama Central College proudly stands as the only Central College serving the Maharagama electorate.
+                </p>
+            </div>
+
+            <!-- Administration Overview -->
+            <h3 class="font-serif text-3xl font-bold text-schoolGreen mb-6 text-center">College Administration</h3>
+
+            <!-- Principal Message Card -->
+            <div class="bg-white rounded shadow p-8 mb-8 border-l-4 border-schoolGreen flex flex-col md:flex-row gap-8 items-center">
+                <div class="w-40 h-40 bg-schoolGreen/10 rounded-full flex-shrink-0 flex items-center justify-center text-schoolGreen text-5xl shadow border-4 border-gray-100 overflow-hidden">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <div>
+                    <span class="text-[10px] bg-schoolGreen text-white px-3 py-1 rounded-full font-bold uppercase tracking-widest">Principal</span>
+                    <h3 class="font-serif text-3xl font-bold text-schoolGreen mt-3 mb-1">Ven. Pidaligannawela Pagnaseeha Thero</h3>
+                    <p class="text-xs text-gray-500 mb-4 font-semibold uppercase tracking-wider">Sri Lanka Principal Service (SLPS II)</p>
+                    <p class="text-gray-600 text-base leading-relaxed italic border-l-2 border-gray-200 pl-4">
+                        "At Central College Maharagama, we are firmly committed to nurturing children endowed with both technology and virtue. Guided by our motto, 'කළයුත්ත දැන එය කරනු', our duty is to present to the nation a generation that is resilient, skilled, and culturally rooted."
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-16">
+                <div class="bg-white rounded shadow p-6 border-t-4 border-schoolGold">
+                    <span class="text-[10px] bg-schoolGold text-darkGreen px-3 py-1 rounded-full font-bold uppercase tracking-widest">Executive Leadership</span>
+                    <h4 class="font-serif text-xl font-bold text-schoolGreen mt-3 mb-2">Deputy Principal (Educational Development)</h4>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        Responsible for school academic curriculum supervision, evaluation mechanisms, teacher professional growth, and term assessment management.
+                    </p>
+                </div>
+
+                <div class="bg-white rounded shadow p-6 border-t-4 border-schoolGreen">
+                    <span class="text-[10px] bg-schoolGreen text-white px-3 py-1 rounded-full font-bold uppercase tracking-widest">Administration & Student Affairs</span>
+                    <h4 class="font-serif text-xl font-bold text-schoolGreen mt-3 mb-2">Assistant Principals (Educational Administration)</h4>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        Three Assistant Principals overseeing secondary school administration, collegiate divisions, student welfare, discipline, and co-curricular programs.
+                    </p>
+                </div>
+            </div>
+
+            <!-- PREFECTS' GUILD SECTION -->
+            <div class="mb-16">
+                <h3 class="font-serif text-3xl font-bold text-schoolGreen mb-6 text-center">Prefects' Guild</h3>
+                
+                <!-- TOP BANNER: GROUP PHOTO -->
+                <div class="w-full h-64 md:h-[400px] bg-gray-200 rounded-3xl mb-12 overflow-hidden shadow-xl border-4 border-schoolGold group">
+                    <img src="prefects_banner.jpg" alt="Prefects Guild Group" class="w-full h-full object-cover transition duration-700 group-hover:scale-105" onerror="this.style.display='none'">
+                </div>
+
+                <!-- HEAD PREFECTS (TWIN CARDS) -->
+                <div class="grid md:grid-cols-2 gap-8 mb-12">
+                    
+                    <!-- Head Prefect (Boy) -->
+                    <div class="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.12)] transition-all duration-300 p-8 border-t-4 border-schoolGold flex flex-col items-center text-center transform hover:-translate-y-1">
+                        <div class="w-32 h-32 bg-schoolGreen/10 rounded-full mb-5 flex items-center justify-center text-gray-400 shadow-md border-4 border-gray-50 overflow-hidden">
+                            <img src="hp_boy.jpg" alt="Head Prefect Boy" class="w-full h-full object-cover" onerror="this.style.display='none'">
+                            <i class="fas fa-user-tie text-3xl absolute -z-10"></i>
+                        </div>
+                        <span class="text-[10px] bg-schoolGold text-darkGreen px-3 py-1 rounded-full font-bold uppercase tracking-widest mb-3">Head Prefect</span>
+                        <h4 class="font-serif text-2xl font-bold text-schoolGreen mb-4">A.M. Ramitha Pethmin Abeysinghe</h4>
+                        <p class="text-gray-600 text-sm leading-relaxed italic border-l-2 border-r-2 border-schoolGold px-4 flex-grow">
+                            "On behalf of the Prefects' Guild, I am honored to lead our student body with pride and dedication. Our leadership vision focuses on leading by example, fostering self-discipline, and encouraging unity across all grades. We are committed to honoring the cherished values of our college and continuing its strong tradition of excellence in every endeavor."
+                        </p>
+                    </div>
+
+                    <!-- Head Prefect (Girl) -->
+                    <div class="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.12)] transition-all duration-300 p-8 border-t-4 border-schoolGreen flex flex-col items-center text-center transform hover:-translate-y-1">
+                        <div class="w-32 h-32 bg-schoolGreen/10 rounded-full mb-5 flex items-center justify-center text-gray-400 shadow-md border-4 border-gray-50 overflow-hidden">
+                            <img src="hp_girl.jpg" alt="Head Prefect Girl" class="w-full h-full object-cover" onerror="this.style.display='none'">
+                            <i class="fas fa-user-graduate text-3xl absolute -z-10"></i>
+                        </div>
+                        <span class="text-[10px] bg-schoolGreen text-white px-3 py-1 rounded-full font-bold uppercase tracking-widest mb-3">Head Prefect</span>
+                        <h4 class="font-serif text-2xl font-bold text-schoolGreen mb-4">M.A.D. Sithija Lakmini Perera</h4>
+                        <p class="text-gray-600 text-sm leading-relaxed italic border-l-2 border-r-2 border-schoolGreen px-4 flex-grow">
+                            "Serving as Head Girl fills me with deep pride and gratitude for our college. My primary leadership goal is to inspire our student body to maintain strong discipline, strive for academic and personal growth, and build a culture of compassion and inclusivity. Together, as proud students of this college, we remain dedicated to upholding our highest standards and leaving a lasting positive legacy."
+                        </p>
+                    </div>
+                </div>
+
+                <!-- OTHER POSITION HOLDERS GRID -->
+                <div class="bg-schoolGreen/5 rounded-3xl p-8 md:p-10 border border-schoolGreen/10">
+                    <h4 class="font-serif text-2xl font-bold text-schoolGreen mb-8 text-center border-b border-schoolGreen/20 pb-4">Senior Prefect Board & Games Captains</h4>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-6 gap-x-8 text-sm text-gray-800">
+                        
+                        <!-- Deputy Head Prefects -->
+                        <div class="col-span-1 md:col-span-2 lg:col-span-3 mb-2">
+                            <span class="font-bold text-schoolGold uppercase tracking-wider text-xs bg-white px-3 py-1 rounded shadow-sm border border-gray-100">Deputy Head Prefects</span>
+                        </div>
+                        <p class="flex items-center"><i class="fas fa-medal text-schoolGold mr-2 w-4"></i> O.M. Rusiru Sahan</p>
+                        <p class="flex items-center"><i class="fas fa-medal text-schoolGold mr-2 w-4"></i> D. Dinuki Vihanga</p>
+                        <p class="flex items-center"><i class="fas fa-medal text-schoolGold mr-2 w-4"></i> K.A. Sithum Inol</p>
+                        <p class="flex items-center"><i class="fas fa-medal text-schoolGold mr-2 w-4"></i> A. Kaweesha Dewmini</p>
+
+                        <!-- Assistant Head Prefects -->
+                        <div class="col-span-1 md:col-span-2 lg:col-span-3 mt-4 mb-2">
+                            <span class="font-bold text-schoolGreen uppercase tracking-wider text-xs bg-white px-3 py-1 rounded shadow-sm border border-gray-100">Assistant Head Prefects</span>
+                        </div>
+                        <p class="flex items-center"><i class="fas fa-star text-schoolGreen mr-2 w-4"></i> W.K.T. Chanaka Perera</p>
+                        <p class="flex items-center"><i class="fas fa-star text-schoolGreen mr-2 w-4"></i> M.M. Nabeel</p>
+                        <p class="flex items-center"><i class="fas fa-star text-schoolGreen mr-2 w-4"></i> S.M.P. Sandakalum</p>
+                        <p class="flex items-center"><i class="fas fa-star text-schoolGreen mr-2 w-4"></i> R.M. Gishan Sathmina</p>
+                        <p class="flex items-center"><i class="fas fa-star text-schoolGreen mr-2 w-4"></i> K.M. Hirushi Erandika</p>
+                        <p class="flex items-center"><i class="fas fa-star text-schoolGreen mr-2 w-4"></i> A.D. Helani Kavinga</p>
+
+                        <!-- Games Captains -->
+                        <div class="col-span-1 md:col-span-2 lg:col-span-3 mt-4 mb-2">
+                            <span class="font-bold text-gray-600 uppercase tracking-wider text-xs bg-white px-3 py-1 rounded shadow-sm border border-gray-100">Games Captains</span>
+                        </div>
+                        <p class="flex items-center"><i class="fas fa-trophy text-gray-400 mr-2 w-4"></i> T.A. Theekshana Shehara <span class="text-xs text-gray-500 ml-1">(Captain)</span></p>
+                        <p class="flex items-center"><i class="fas fa-trophy text-gray-400 mr-2 w-4"></i> K.G. Shelani Imansha <span class="text-xs text-gray-500 ml-1">(Captain)</span></p>
+                        <p class="flex items-center"><i class="fas fa-award text-gray-400 mr-2 w-4"></i> K. Yohara Rashmika <span class="text-xs text-gray-500 ml-1">(Assistant)</span></p>
+                        <p class="flex items-center"><i class="fas fa-award text-gray-400 mr-2 w-4"></i> R. Hiruni Apsara <span class="text-xs text-gray-500 ml-1">(Assistant)</span></p>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-darkGreen text-white pt-14 pb-8 border-t-4 border-schoolGold mt-12 relative z-40">
+        <div class="max-w-7xl mx-auto px-8 sm:px-12 grid md:grid-cols-3 gap-10 mb-10">
+            <div>
+                <div class="flex items-center space-x-3 mb-6">
+                    <img src="logo.jpg" alt="Central College Maharagama Logo" class="w-12 h-12 object-contain bg-white rounded-full p-1">
+                    <h3 class="font-serif font-bold text-xl tracking-wide">Central College<br>Maharagama</h3>
+                </div>
+                <p class="text-sm text-gray-300 leading-relaxed max-w-xs">
+                    Dedicated to cultivating an enlightened, technologically empowered generation ready to face global challenges.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-serif font-bold text-schoolGold mb-5 text-lg tracking-wide border-b border-gray-600 pb-2 inline-block">Quick Navigation</h4>
+                <ul class="space-y-3 text-sm text-gray-300">
+                    <li><button onclick="switchPage('home')" class="hover:text-schoolGold transition duration-300 transform hover:scale-105 origin-left flex items-center"><i class="fas fa-angle-right text-xs mr-2 text-schoolGold"></i> Home Page</button></li>
+                    <li><button onclick="switchPage('news')" class="hover:text-schoolGold transition duration-300 transform hover:scale-105 origin-left flex items-center"><i class="fas fa-angle-right text-xs mr-2 text-schoolGold"></i> College News</button></li>
+                    <li><button onclick="switchPage('academics')" class="hover:text-schoolGold transition duration-300 transform hover:scale-105 origin-left flex items-center"><i class="fas fa-angle-right text-xs mr-2 text-schoolGold"></i> Academic Programs</button></li>
+                    <li><button onclick="switchPage('sports')" class="hover:text-schoolGold transition duration-300 transform hover:scale-105 origin-left flex items-center"><i class="fas fa-angle-right text-xs mr-2 text-schoolGold"></i> Sports & Athletics</button></li>
+                    <li><button onclick="switchPage('clubs')" class="hover:text-schoolGold transition duration-300 transform hover:scale-105 origin-left flex items-center"><i class="fas fa-angle-right text-xs mr-2 text-schoolGold"></i> Clubs & Societies</button></li>
+                    <li><button onclick="switchPage('about')" class="hover:text-schoolGold transition duration-300 transform hover:scale-105 origin-left flex items-center"><i class="fas fa-angle-right text-xs mr-2 text-schoolGold"></i> About Us</button></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-serif font-bold text-schoolGold mb-5 text-lg tracking-wide border-b border-gray-600 pb-2 inline-block">Contact College</h4>
+                <div class="space-y-4 text-sm text-gray-300">
+                    <p class="flex items-start"><i class="fas fa-map-marker-alt text-schoolGold mt-1 mr-3 w-4"></i> <span>Gammana Road, Maharagama 10280, Sri Lanka</span></p>
+                    <p class="flex items-start"><i class="fas fa-phone text-schoolGold mt-1 mr-3 w-4"></i> <span>Tel / Fax: 011 285 0054</span></p>
+                    <p class="flex items-start"><i class="fas fa-envelope text-schoolGold mt-1 mr-3 w-4"></i> <span>maharagamacentral@gmail.com</span></p>
+                    <p class="flex items-start"><i class="fas fa-globe text-schoolGold mt-1 mr-3 w-4"></i> <span>Census No: 0398</span></p>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-8 sm:px-12 border-t border-gray-700 pt-6 flex flex-col sm:flex-row justify-between items-center text-xs text-gray-400">
+            <p>&copy; 2026 Central College Maharagama. All rights reserved.</p>
+            <p class="mt-2 sm:mt-0 font-sinhala font-semibold tracking-wider">කළයුත්ත දැන එය කරනු</p>
+        </div>
+    </footer>
+
+    <!-- ==============================================
+         POPUP MODAL & MULTI-PHOTO GALLERY CONTAINER
+         ============================================== -->
+    <div id="custom-modal" class="hidden fixed inset-0 bg-black/70 z-[99999] flex items-center justify-center p-4 transition-opacity">
+        <div class="bg-white w-full max-w-2xl rounded-lg shadow-2xl overflow-hidden modal-animate flex flex-col max-h-[90vh]">
+            <div class="bg-schoolGreen px-6 py-4 flex justify-between items-center text-white">
+                <h3 id="modal-tag" class="font-bold uppercase tracking-wider text-xs text-schoolGold">News Tag</h3>
+                <button onclick="closeNewsModal()" class="text-white hover:text-red-400 transition text-xl focus:outline-none">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-6 md:p-8 overflow-y-auto">
+                <h2 id="modal-title" class="font-serif text-2xl md:text-3xl font-bold text-darkGreen mb-4">News Title</h2>
+                <div class="w-16 h-1 bg-schoolGold mb-6"></div>
+                <p id="modal-content" class="text-gray-700 leading-relaxed text-sm md:text-base mb-6">
+                    Content goes here...
+                </p>
+                <!-- DYNAMIC GALLERY INJECTION AREA -->
+                <div id="modal-gallery" class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6"></div>
+            </div>
+            <div class="bg-gray-50 px-6 py-4 border-t border-gray-200 text-right">
+                <button onclick="closeNewsModal()" class="bg-schoolGreen text-white px-6 py-2 rounded hover:bg-darkGreen transition font-semibold text-sm shadow">Close Window</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Master JavaScript Engine -->
+    <script>
+        // Splash Screen Termination
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                document.body.classList.remove('overflow-hidden');
+                document.body.classList.add('overflow-x-hidden');
+                setTimeout(() => {
+                    const splash = document.getElementById('splash-screen');
+                    if(splash) splash.style.display = 'none';
+                }, 1000);
+            }, 4800); 
+        });
+
+        // Single-Page-App Tab Routing Function
+        function switchPage(pageId) {
+            const sections = document.querySelectorAll('.page-section');
+            sections.forEach(sec => sec.classList.add('hidden'));
+
+            const targetSection = document.getElementById('page-' + pageId);
+            if (targetSection) {
+                targetSection.classList.remove('hidden');
+            }
+
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('text-white', 'border-b-2', 'border-schoolGold');
+                btn.classList.add('text-gray-200');
+            });
+
+            const activeBtn = document.getElementById('nav-' + pageId);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-gray-200');
+                activeBtn.classList.add('text-white', 'border-b-2', 'border-schoolGold');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Multi-Photo Modal Opening Routine
+        function openNewsModal(title, tag, content, images = []) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-tag').innerText = tag;
+            document.getElementById('modal-content').innerText = content;
+            
+            const gallery = document.getElementById('modal-gallery');
+            gallery.innerHTML = ''; // Reset previous images
+            
+            if (Array.isArray(images) && images.length > 0) {
+                images.forEach(src => {
+                    const img = document.createElement('img');
+                    img.src = src;
+                    img.className = 'w-full h-48 object-cover rounded-lg shadow-md border border-gray-200';
+                    gallery.appendChild(img);
+                });
+            }
+
+            document.getElementById('custom-modal').classList.remove('hidden');
+            document.body.classList.add('overflow-hidden'); // Prevent background body scroll
+        }
+
+        function closeNewsModal() {
+            document.getElementById('custom-modal').classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        document.getElementById('custom-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeNewsModal();
+            }
+        });
+
+        // ==============================================
+        // AUTOMATIC SPORTS IMAGE SLIDER (3 SECONDS)
+        // ==============================================
+        let currentSportSlide = 0;
+        
+        function cycleSportsSlider() {
+            const slides = document.querySelectorAll('.sport-slide');
+            if(slides.length === 0) return; // Failsafe if not on sports page
+            
+            // 1. Fade out the current slide
+            slides[currentSportSlide].classList.remove('opacity-100');
+            slides[currentSportSlide].classList.add('opacity-0');
+            
+            // 2. Calculate the next slide number
+            currentSportSlide = (currentSportSlide + 1) % slides.length;
+            
+            // 3. Fade in the new slide
+            slides[currentSportSlide].classList.remove('opacity-0');
+            slides[currentSportSlide].classList.add('opacity-100');
+        }
+
+        // Run the cycle every 3000 milliseconds (3 seconds)
+        setInterval(cycleSportsSlider, 3000);
+    </script>
+</body>
+</html>
