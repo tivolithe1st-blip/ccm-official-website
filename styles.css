@@ -1,0 +1,67 @@
+/* =========================================
+   SPLASH SCREEN ANIMATIONS
+   ========================================= */
+@keyframes logoFadeIn {
+    0% { opacity: 0; transform: scale(0.9); }
+    100% { opacity: 1; transform: scale(1); }
+}
+@keyframes wordFadeIn {
+    0% { opacity: 0; transform: translateY(10px); filter: blur(2px); }
+    100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+@keyframes splashFadeOut {
+    0% { opacity: 1; visibility: visible; }
+    100% { opacity: 0; visibility: hidden; }
+}
+
+#splash-screen {
+    animation: splashFadeOut 1s ease-in-out forwards 4.8s;
+}
+
+.splash-logo {
+    opacity: 0;
+    animation: logoFadeIn 1s ease-out forwards 0.2s;
+}
+
+.splash-word {
+    opacity: 0;
+    display: inline-block;
+    animation: wordFadeIn 0.8s ease-out forwards;
+}
+
+/* =========================================
+   HERO BACKGROUND CANVAS
+   ========================================= */
+.hero-bg {
+    position: relative;
+    background: url('schoolimg.jpg');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1; 
+}
+
+.hero-bg::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.82));
+    z-index: -1; 
+    transition: opacity 0.6s ease-in-out; 
+}
+
+.hero-bg:hover::before {
+    opacity: 0.2; 
+}
+
+/* Modal Dialog Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+.modal-animate {
+    animation: fadeIn 0.3s ease-out forwards;
+}
