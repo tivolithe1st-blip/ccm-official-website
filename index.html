@@ -19,59 +19,17 @@
         }
     </script>
     <style>
-        /* Fallback Hero & Splash styling in case styles.css is cached or missing rules */
-        .hero-bg {
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            position: relative;
-            min-height: 540px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .hero-bg::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to bottom, rgba(6, 53, 24, 0.72), rgba(11, 83, 41, 0.85));
-            z-index: 1;
-        }
-        .hero-bg > * { position: relative; z-index: 2; }
-
-        /* Edit Mode Styling */
         .edit-mode-active .editable-text { border: 2px dashed #d4af37; padding: 4px; border-radius: 4px; background-color: rgba(212, 175, 55, 0.05); transition: all 0.2s; outline: none; min-height: 24px; display: inline-block; }
-        .edit-mode-active .editable-text:focus { background-color: white; color: #1f2937 !important; border: 2px solid #0b5329; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .edit-mode-active .editable-img, .edit-mode-active .editable-bg { border: 4px dashed #d4af37 !important; cursor: pointer !important; position: relative; z-index: 20 !important; min-height: 60px; }
-        .edit-mode-active .editable-img[style*="opacity: 0"] { opacity: 0.35 !important; background-color: rgba(212, 175, 55, 0.25); }
-        .edit-mode-active .editable-link { border: 2px dashed #d4af37; box-sizing: border-box; cursor: pointer; position: relative; z-index: 20; }
-        .edit-mode-active .editable-img:hover, .edit-mode-active .editable-bg:hover, .edit-mode-active .editable-link:hover { opacity: 0.85 !important; filter: brightness(1.1); }
+        .edit-mode-active .editable-text:focus { background-color: white; border: 2px solid #0b5329; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .edit-mode-active .editable-img, .edit-mode-active .editable-bg { border: 4px dashed #d4af37; cursor: pointer; position: relative; z-index: 10; }
+        .edit-mode-active .editable-link { border: 2px dashed #d4af37; box-sizing: border-box; cursor: pointer; position: relative; z-index: 10; }
+        .edit-mode-active .editable-img:hover, .edit-mode-active .editable-bg:hover, .edit-mode-active .editable-link:hover { opacity: 0.8 !important; filter: brightness(1.2); }
         .admin-only { display: none !important; }
         .edit-mode-active .admin-only { display: flex !important; }
         
-        /* Floating Upload Badge shown on image containers during Edit Mode */
-        .img-upload-badge {
-            display: none;
-            position: absolute;
-            bottom: 8px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #d4af37;
-            color: #063518;
-            font-size: 11px;
-            font-weight: 800;
-            padding: 5px 12px;
-            border-radius: 9999px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.35);
-            z-index: 35;
-            white-space: nowrap;
-            pointer-events: none;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        .edit-mode-active .img-upload-badge { display: inline-flex; align-items: center; gap: 5px; }
-        
+        /* Global override to ensure all delete buttons sit strictly above editable images */
         .delete-card-btn, .delete-banner-btn { z-index: 50 !important; }
+        
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
@@ -79,11 +37,7 @@
 
 <body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen relative">
 
-    <!-- Hidden Global File Picker for Clicking Any Page Image -->
-    <input type="file" id="global-image-picker" accept="image/*" class="hidden">
-
-    <!-- SPLASH SCREEN -->
-    <div id="splash-screen" class="fixed inset-0 bg-darkGreen z-[999999] flex flex-col items-center justify-center transition-opacity duration-700">
+    <div id="splash-screen" class="fixed inset-0 bg-darkGreen z-[999999] flex flex-col items-center justify-center transition-opacity">
         <img src="logo.jpg" data-db-field="mainLogo" alt="Central College Maharagama Crest" class="editable-img splash-logo w-24 h-24 md:w-32 md:h-32 object-contain bg-white rounded-full p-2 mb-8 shadow-[0_0_40px_rgba(212,175,55,0.25)]">
         <div class="flex space-x-3 md:space-x-5 text-xl md:text-4xl text-white font-serif tracking-[0.2em] drop-shadow-lg uppercase">
             <span class="splash-word" style="animation-delay: 0.8s;">Know</span><span class="splash-word" style="animation-delay: 1.2s;">What</span><span class="splash-word" style="animation-delay: 1.6s;">To</span><span class="splash-word" style="animation-delay: 2.0s;">Do</span><span class="splash-word" style="animation-delay: 2.4s;">And</span><span class="splash-word" style="animation-delay: 2.8s;">Do</span><span class="splash-word" style="animation-delay: 3.2s;">It</span>
@@ -92,8 +46,6 @@
             <span class="splash-word" style="animation-delay: 3.8s;">කළයුත්ත</span><span class="splash-word" style="animation-delay: 3.8s;">දැන</span><span class="splash-word" style="animation-delay: 3.8s;">එය</span><span class="splash-word" style="animation-delay: 3.8s;">කරනු</span>
         </div>
     </div>
-
-    <!-- SIDE RIBBONS & TOP INFO BAR -->
     <div class="fixed top-0 left-0 h-full flex z-50 pointer-events-none"><div class="w-1 md:w-3 h-full bg-schoolGold opacity-90 shadow-[2px_0_10px_rgba(0,0,0,0.3)]"></div><div class="w-1 md:w-3 h-full bg-schoolGreen opacity-90"></div></div>
     <div class="fixed top-0 right-0 h-full flex z-50 pointer-events-none"><div class="w-1 md:w-3 h-full bg-schoolGreen opacity-90"></div><div class="w-1 md:w-3 h-full bg-schoolGold opacity-90 shadow-[-2px_0_10px_rgba(0,0,0,0.3)]"></div></div>
     <div class="bg-darkGreen text-white text-xs py-2 px-4 sm:px-10 flex justify-between items-center border-b border-schoolGold/30 relative z-40">
@@ -104,10 +56,9 @@
         </div>
     </div>
 
-    <!-- MAIN NAVIGATION HEADER -->
-    <header id="main-header" class="sticky top-0 z-40 bg-darkGreen/90 backdrop-blur-md shadow-lg border-b-2 border-schoolGold/50 transition-all duration-300">
+    <header id="main-header" class="sticky top-0 z-40 bg-darkGreen/85 backdrop-blur-md shadow-lg border-b-2 border-schoolGold/50 transition-all duration-300 relative">
         <div class="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 h-20 flex items-center justify-between">
-            <div class="flex items-center space-x-3 cursor-pointer transition duration-300 transform hover:scale-105 origin-left pl-2 md:pl-4 relative" onclick="window.navigateIfNotEditing('home')">
+            <div class="flex items-center space-x-3 cursor-pointer transition duration-300 transform hover:scale-105 origin-left pl-2 md:pl-4" onclick="navigateIfNotEditing('home')">
                 <img src="logo.jpg" data-db-field="mainLogo" alt="Central College Maharagama Crest" class="editable-img w-14 h-14 object-contain bg-white rounded-full p-1 shadow">
                 <div>
                     <h1 class="font-serif text-xl md:text-2xl font-bold text-white leading-tight tracking-wide drop-shadow">CENTRAL COLLEGE MAHARAGAMA</h1>
@@ -117,16 +68,16 @@
             
             <!-- Desktop Navigation -->
             <nav class="hidden lg:flex space-x-1 xl:space-x-4 font-semibold text-sm pr-2 md:pr-4">
-                <button type="button" onclick="window.switchPage('home')" id="nav-home" class="nav-btn px-3 py-2 rounded text-white border-b-2 border-schoolGold transition duration-300 transform hover:scale-110">Home</button>
-                <button type="button" onclick="window.switchPage('news')" id="nav-news" class="nav-btn px-3 py-2 rounded text-gray-200 hover:text-white transition duration-300 transform hover:scale-110">News</button>
-                <button type="button" onclick="window.switchPage('academics')" id="nav-academics" class="nav-btn px-3 py-2 rounded text-gray-200 hover:text-white transition duration-300 transform hover:scale-110">Academics</button>
-                <button type="button" onclick="window.switchPage('sports')" id="nav-sports" class="nav-btn px-3 py-2 rounded text-gray-200 hover:text-white transition duration-300 transform hover:scale-110">Sports</button>
-                <button type="button" onclick="window.switchPage('clubs')" id="nav-clubs" class="nav-btn px-3 py-2 rounded text-gray-200 hover:text-white transition duration-300 transform hover:scale-110">Clubs & Societies</button>
-                <button type="button" onclick="window.switchPage('about')" id="nav-about" class="nav-btn px-3 py-2 rounded text-gray-200 hover:text-white transition duration-300 transform hover:scale-110">About Us</button>
+                <button onclick="switchPage('home')" id="nav-home" class="nav-btn px-3 py-2 rounded text-white border-b-2 border-schoolGold transition duration-300 transform hover:scale-110">Home</button>
+                <button onclick="switchPage('news')" id="nav-news" class="nav-btn px-3 py-2 rounded text-gray-200 hover:text-white transition duration-300 transform hover:scale-110">News</button>
+                <button onclick="switchPage('academics')" id="nav-academics" class="nav-btn px-3 py-2 rounded text-gray-200 hover:text-white transition duration-300 transform hover:scale-110">Academics</button>
+                <button onclick="switchPage('sports')" id="nav-sports" class="nav-btn px-3 py-2 rounded text-gray-200 hover:text-white transition duration-300 transform hover:scale-110">Sports</button>
+                <button onclick="switchPage('clubs')" id="nav-clubs" class="nav-btn px-3 py-2 rounded text-gray-200 hover:text-white transition duration-300 transform hover:scale-110">Clubs & Societies</button>
+                <button onclick="switchPage('about')" id="nav-about" class="nav-btn px-3 py-2 rounded text-gray-200 hover:text-white transition duration-300 transform hover:scale-110">About Us</button>
             </nav>
 
             <!-- Mobile Hamburger Button -->
-            <button type="button" onclick="window.toggleMobileMenu()" class="lg:hidden text-white text-2xl pr-2 focus:outline-none hover:text-schoolGold transition">
+            <button onclick="toggleMobileMenu()" class="lg:hidden text-white text-2xl pr-2 focus:outline-none hover:text-schoolGold transition">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
@@ -134,21 +85,20 @@
         <!-- Mobile Navigation Dropdown -->
         <div id="mobile-menu" class="hidden lg:hidden bg-darkGreen/95 backdrop-blur-md border-t border-schoolGold/30 absolute w-full left-0 top-20 shadow-xl z-50">
             <div class="flex flex-col px-8 py-4 space-y-2 font-semibold text-sm">
-                <button type="button" onclick="window.switchPage('home')" id="mob-nav-home" class="mob-nav-btn text-left text-white border-l-2 border-schoolGold pl-3 py-3 transition">Home</button>
-                <button type="button" onclick="window.switchPage('news')" id="mob-nav-news" class="mob-nav-btn text-left text-gray-300 hover:text-white pl-3 py-3 transition">News</button>
-                <button type="button" onclick="window.switchPage('academics')" id="mob-nav-academics" class="mob-nav-btn text-left text-gray-300 hover:text-white pl-3 py-3 transition">Academics</button>
-                <button type="button" onclick="window.switchPage('sports')" id="mob-nav-sports" class="mob-nav-btn text-left text-gray-300 hover:text-white pl-3 py-3 transition">Sports</button>
-                <button type="button" onclick="window.switchPage('clubs')" id="mob-nav-clubs" class="mob-nav-btn text-left text-gray-300 hover:text-white pl-3 py-3 transition">Clubs & Societies</button>
-                <button type="button" onclick="window.switchPage('about')" id="mob-nav-about" class="mob-nav-btn text-left text-gray-300 hover:text-white pl-3 py-3 transition">About Us</button>
+                <button onclick="navigateIfNotEditing('home')" id="mob-nav-home" class="mob-nav-btn text-left text-white border-l-2 border-schoolGold pl-3 py-3 transition">Home</button>
+                <button onclick="navigateIfNotEditing('news')" id="mob-nav-news" class="mob-nav-btn text-left text-gray-300 hover:text-white pl-3 py-3 transition">News</button>
+                <button onclick="navigateIfNotEditing('academics')" id="mob-nav-academics" class="mob-nav-btn text-left text-gray-300 hover:text-white pl-3 py-3 transition">Academics</button>
+                <button onclick="navigateIfNotEditing('sports')" id="mob-nav-sports" class="mob-nav-btn text-left text-gray-300 hover:text-white pl-3 py-3 transition">Sports</button>
+                <button onclick="navigateIfNotEditing('clubs')" id="mob-nav-clubs" class="mob-nav-btn text-left text-gray-300 hover:text-white pl-3 py-3 transition">Clubs & Societies</button>
+                <button onclick="navigateIfNotEditing('about')" id="mob-nav-about" class="mob-nav-btn text-left text-gray-300 hover:text-white pl-3 py-3 transition">About Us</button>
             </div>
         </div>
     </header>
 
     <main class="flex-grow">
         <!-- ================= PAGE 1: HOME ================= -->
-        <section id="page-home" class="page-section" style="display: block;">
-            <div id="live-heroBg" class="hero-bg editable-bg text-white px-4 text-center w-full -mt-20 pt-20 relative" data-db-field="heroBg" data-bg-url="schoolimg.jpg" style="background-image: url('schoolimg.jpg');">
-                <span class="img-upload-badge"><i class="fas fa-upload"></i> Click Background to Upload New Hero Photo</span>
+        <section id="page-home" class="page-section">
+            <div id="live-heroBg" class="hero-bg editable-bg text-white px-4 text-center w-full -mt-20 pt-20" data-db-field="heroBg" data-bg-url="schoolimg.jpg" style="background-image: url('schoolimg.jpg');">
                 <div class="max-w-5xl mx-auto flex flex-col items-center">
                     <h2 id="live-heroSub" class="editable-text font-serif text-2xl md:text-4xl italic tracking-wide mb-3 drop-shadow-lg text-gray-200" data-db-field="heroSub">Welcome to</h2>
                     <h1 id="live-heroTitle" class="editable-text font-serif text-5xl md:text-7xl lg:text-8xl font-bold mb-4 tracking-tight drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)] text-white" data-db-field="heroTitle">Central College<br>Maharagama</h1>
@@ -161,8 +111,8 @@
                 <div class="grid md:grid-cols-2 gap-12 items-center mb-20">
                     <div>
                         <h2 id="live-welcomeTitle" class="editable-text w-full font-serif text-4xl font-bold text-schoolGreen mb-6 border-l-4 border-schoolGold pl-4" data-db-field="welcomeTitle">Welcome to Our College</h2>
-                        <p id="live-welcomeP1" class="editable-text w-full text-gray-600 leading-relaxed mb-4 text-justify" data-db-field="welcomeP1">Central College Maharagama stands as the singular Type 1AB Government School within the Maharagama Divisional Secretariat...</p>
-                        <p id="live-welcomeP2" class="editable-text w-full text-gray-600 leading-relaxed mb-6 text-justify" data-db-field="welcomeP2">With our distinguished motto, "කළයුත්ත දැන එය කරනු" (Know what to do and do it)...</p>
+                        <p id="live-welcomeP1" class="editable-text w-full text-gray-600 leading-relaxed mb-4 text-justify" data-db-field="welcomeP1">Central College Maharagama stands as the singular Type 1AB Government School within the Maharagama Divisional Secretariat, serving a vibrant student community of over 1,100 learners guided by 74 dedicated academic educators. Located along Gammana Road, our institution has long been a cornerstone of academic, technological, cultural, and athletic excellence in the Western Province.</p>
+                        <p id="live-welcomeP2" class="editable-text w-full text-gray-600 leading-relaxed mb-6 text-justify" data-db-field="welcomeP2">With our distinguished motto, "කළයුත්ත දැන එය කරනු" (Know what to do and do it), we provide comprehensive secondary education from Grade 6 through Grade 11 alongside five specialized G.C.E. Advanced Level streams, empowering students with wisdom, discipline, and modern technological fluency.</p>
                     </div>
                     <div class="bg-white p-8 rounded shadow-xl border-t-4 border-schoolGreen">
                         <div class="flex items-center space-x-4 mb-6">
@@ -170,9 +120,17 @@
                             <div><h3 class="font-serif text-2xl font-bold text-schoolGreen">Vision & Mission</h3></div>
                         </div>
                         <div class="space-y-6">
-                            <div><h4 class="font-bold text-schoolGreen text-sm uppercase tracking-wider mb-2">Our Vision (දැක්ම)</h4><p id="live-visionEn" class="editable-text w-full text-gray-600 text-sm leading-relaxed border-l-2 border-schoolGold pl-3" data-db-field="visionEn">"A generation that conquers the world with technology, endowed with wisdom and virtue."</p></div>
+                            <div>
+                                <h4 class="font-bold text-schoolGreen text-sm uppercase tracking-wider mb-2">Our Vision (දැක්ම)</h4>
+                                <p id="live-visionSin" class="editable-text w-full font-sinhala text-darkGreen font-semibold text-sm mb-1 pl-3 border-l-2 border-schoolGold" data-db-field="visionSin">"නැණ ගුණ දම් සපිරි තාක්ෂණයෙන් ලොව දිනන පරපුරක්"</p>
+                                <p id="live-visionEn" class="editable-text w-full text-gray-600 text-sm leading-relaxed border-l-2 border-schoolGold pl-3" data-db-field="visionEn">"A generation that conquers the world with technology, endowed with wisdom and virtue."</p>
+                            </div>
                             <hr class="border-gray-100">
-                            <div><h4 class="font-bold text-schoolGreen text-sm uppercase tracking-wider mb-2">Our Mission (මෙහෙවර)</h4><p id="live-missionEn" class="editable-text w-full text-gray-600 text-sm leading-relaxed border-l-2 border-schoolGold pl-3" data-db-field="missionEn">"To gift to the nation a generation complete in wisdom, nurtured in virtue..."</p></div>
+                            <div>
+                                <h4 class="font-bold text-schoolGreen text-sm uppercase tracking-wider mb-2">Our Mission (මෙහෙවර)</h4>
+                                <p id="live-missionSin" class="editable-text w-full font-sinhala text-darkGreen font-semibold text-sm mb-1 pl-3 border-l-2 border-schoolGold" data-db-field="missionSin">"නුවණින් පරිපූර්ණ වූත් ගුණ දහමින් වැඩුණු, නව තාක්ෂණයෙන් යුත්, ගෝලීය අර්බුදයන් හමුවේ නොසැලෙන පරපුරක් දැයට දායාද කිරීම"</p>
+                                <p id="live-missionEn" class="editable-text w-full text-gray-600 text-sm leading-relaxed border-l-2 border-schoolGold pl-3" data-db-field="missionEn">"To gift to the nation a generation complete in wisdom, nurtured in virtue, equipped with modern technology, and unwavering in the face of global crises."</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -180,9 +138,8 @@
                 <div class="max-w-5xl mx-auto px-4 mb-24 text-center">
                     <div class="w-16 h-1 bg-schoolGold mx-auto mt-4 mb-8"></div>
                     <h3 id="live-mottoTitle" class="editable-text font-serif text-3xl font-bold text-schoolGreen mb-8" data-db-field="mottoTitle">Our Motto</h3>
-                    <div class="bg-darkGreen rounded-3xl overflow-hidden shadow-2xl inline-block w-full md:w-4/5 mx-auto border-4 border-schoolGold transform hover:scale-[1.02] transition duration-500 relative">
+                    <div class="bg-darkGreen rounded-3xl overflow-hidden shadow-2xl inline-block w-full md:w-4/5 mx-auto border-4 border-schoolGold transform hover:scale-[1.02] transition duration-500">
                         <img id="live-mottoImg" src="motto.jpg" alt="School Motto" class="editable-img w-full h-auto object-cover" data-db-field="mottoImg">
-                        <span class="img-upload-badge"><i class="fas fa-upload"></i> Click to Upload Motto Image</span>
                     </div>
                 </div>
 
@@ -193,11 +150,10 @@
                         <div class="w-16 h-1 bg-schoolGold mx-auto mt-4 mb-8"></div>
                     </div>
                     
-                    <div onclick="window.navigateIfNotEditing('news')" class="cursor-pointer group bg-white rounded-3xl p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col md:flex-row items-center gap-8 border border-gray-100 hover:border-schoolGold">
+                    <div onclick="navigateIfNotEditing('news')" class="cursor-pointer group bg-white rounded-3xl p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col md:flex-row items-center gap-8 border border-gray-100 hover:border-schoolGold">
                         <div class="w-24 h-24 md:w-32 md:h-32 flex-shrink-0 relative rounded-full bg-schoolGreen/10 shadow-inner overflow-hidden">
                             <div class="absolute inset-0 flex items-center justify-center text-schoolGreen text-4xl md:text-5xl"><i class="fas fa-newspaper"></i></div>
-                            <img id="live-link1Img" class="editable-img absolute inset-0 w-full h-full object-cover rounded-full" style="opacity: 0;" onload="if(this.getAttribute('src')) this.style.opacity='1'" onerror="this.style.opacity='0'" src="" data-db-field="link1Img" alt="">
-                            <span class="img-upload-badge"><i class="fas fa-camera"></i> Upload</span>
+                            <img id="live-link1Img" class="editable-img absolute inset-0 w-full h-full object-cover rounded-full" style="opacity: 0;" onload="this.style.opacity='1'" onerror="this.style.opacity='0'" src="" data-db-field="link1Img" alt="">
                         </div>
                         <div class="text-center md:text-left w-full">
                             <h4 id="live-link1Title" class="editable-text block font-serif font-bold text-2xl md:text-3xl mb-3 text-gray-800 group-hover:text-schoolGreen transition" data-db-field="link1Title">College News & Events</h4>
@@ -205,11 +161,10 @@
                         </div>
                     </div>
 
-                    <div onclick="window.navigateIfNotEditing('academics')" class="cursor-pointer group bg-white rounded-3xl p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col md:flex-row items-center gap-8 border border-gray-100 hover:border-schoolGold">
+                    <div onclick="navigateIfNotEditing('academics')" class="cursor-pointer group bg-white rounded-3xl p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col md:flex-row items-center gap-8 border border-gray-100 hover:border-schoolGold">
                         <div class="w-24 h-24 md:w-32 md:h-32 flex-shrink-0 relative rounded-full bg-yellow-50 shadow-inner overflow-hidden md:order-last">
                             <div class="absolute inset-0 flex items-center justify-center text-schoolGold text-4xl md:text-5xl"><i class="fas fa-graduation-cap"></i></div>
-                            <img id="live-link2Img" class="editable-img absolute inset-0 w-full h-full object-cover rounded-full" style="opacity: 0;" onload="if(this.getAttribute('src')) this.style.opacity='1'" onerror="this.style.opacity='0'" src="" data-db-field="link2Img" alt="">
-                            <span class="img-upload-badge"><i class="fas fa-camera"></i> Upload</span>
+                            <img id="live-link2Img" class="editable-img absolute inset-0 w-full h-full object-cover rounded-full" style="opacity: 0;" onload="this.style.opacity='1'" onerror="this.style.opacity='0'" src="" data-db-field="link2Img" alt="">
                         </div>
                         <div class="text-center md:text-right flex-grow w-full">
                             <h4 id="live-link2Title" class="editable-text block font-serif font-bold text-2xl md:text-3xl mb-3 text-gray-800 group-hover:text-schoolGreen transition" data-db-field="link2Title">Academics & Curricula</h4>
@@ -217,11 +172,10 @@
                         </div>
                     </div>
 
-                    <div onclick="window.navigateIfNotEditing('sports')" class="cursor-pointer group bg-white rounded-3xl p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col md:flex-row items-center gap-8 border border-gray-100 hover:border-schoolGold">
+                    <div onclick="navigateIfNotEditing('sports')" class="cursor-pointer group bg-white rounded-3xl p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col md:flex-row items-center gap-8 border border-gray-100 hover:border-schoolGold">
                         <div class="w-24 h-24 md:w-32 md:h-32 flex-shrink-0 relative rounded-full bg-schoolGreen/10 shadow-inner overflow-hidden">
                             <div class="absolute inset-0 flex items-center justify-center text-schoolGreen text-4xl md:text-5xl"><i class="fas fa-running"></i></div>
-                            <img id="live-link3Img" class="editable-img absolute inset-0 w-full h-full object-cover rounded-full" style="opacity: 0;" onload="if(this.getAttribute('src')) this.style.opacity='1'" onerror="this.style.opacity='0'" src="" data-db-field="link3Img" alt="">
-                            <span class="img-upload-badge"><i class="fas fa-camera"></i> Upload</span>
+                            <img id="live-link3Img" class="editable-img absolute inset-0 w-full h-full object-cover rounded-full" style="opacity: 0;" onload="this.style.opacity='1'" onerror="this.style.opacity='0'" src="" data-db-field="link3Img" alt="">
                         </div>
                         <div class="text-center md:text-left w-full">
                             <h4 id="live-link3Title" class="editable-text block font-serif font-bold text-2xl md:text-3xl mb-3 text-gray-800 group-hover:text-schoolGreen transition" data-db-field="link3Title">Sports & Athletics</h4>
@@ -229,11 +183,10 @@
                         </div>
                     </div>
 
-                    <div onclick="window.navigateIfNotEditing('clubs')" class="cursor-pointer group bg-white rounded-3xl p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col md:flex-row items-center gap-8 border border-gray-100 hover:border-schoolGold">
+                    <div onclick="navigateIfNotEditing('clubs')" class="cursor-pointer group bg-white rounded-3xl p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col md:flex-row items-center gap-8 border border-gray-100 hover:border-schoolGold">
                         <div class="w-24 h-24 md:w-32 md:h-32 flex-shrink-0 relative rounded-full bg-yellow-50 shadow-inner overflow-hidden md:order-last">
                             <div class="absolute inset-0 flex items-center justify-center text-schoolGold text-4xl md:text-5xl"><i class="fas fa-users"></i></div>
-                            <img id="live-link4Img" class="editable-img absolute inset-0 w-full h-full object-cover rounded-full" style="opacity: 0;" onload="if(this.getAttribute('src')) this.style.opacity='1'" onerror="this.style.opacity='0'" src="" data-db-field="link4Img" alt="">
-                            <span class="img-upload-badge"><i class="fas fa-camera"></i> Upload</span>
+                            <img id="live-link4Img" class="editable-img absolute inset-0 w-full h-full object-cover rounded-full" style="opacity: 0;" onload="this.style.opacity='1'" onerror="this.style.opacity='0'" src="" data-db-field="link4Img" alt="">
                         </div>
                         <div class="text-center md:text-right flex-grow w-full">
                             <h4 id="live-link4Title" class="editable-text block font-serif font-bold text-2xl md:text-3xl mb-3 text-gray-800 group-hover:text-schoolGreen transition" data-db-field="link4Title">Clubs & Societies</h4>
@@ -245,16 +198,16 @@
         </section>
 
         <!-- ================= PAGE 2: NEWS ================= -->
-        <section id="page-news" class="page-section hidden max-w-7xl mx-auto px-8 sm:px-12 py-12" style="display: none;">
+        <section id="page-news" class="page-section hidden max-w-7xl mx-auto px-8 sm:px-12 py-12">
             <div class="border-b border-gray-200 pb-5 mb-8 flex justify-between items-end">
                 <h2 class="font-serif text-4xl font-extrabold text-schoolGreen mt-1">College News & Bulletins</h2>
-                <button type="button" onclick="window.openNewsEditor()" class="admin-only bg-schoolGold hover:bg-yellow-500 text-darkGreen px-4 py-2 rounded shadow font-bold text-sm items-center transition"><i class="fas fa-plus mr-2"></i> Add New Bulletin</button>
+                <button onclick="openNewsEditor()" class="admin-only bg-schoolGold hover:bg-yellow-500 text-darkGreen px-4 py-2 rounded shadow font-bold text-sm items-center transition"><i class="fas fa-plus mr-2"></i> Add New Bulletin</button>
             </div>
             <div id="news-card-container" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
         </section>
 
         <!-- ================= PAGE 3: ACADEMICS ================= -->
-        <section id="page-academics" class="page-section hidden max-w-7xl mx-auto px-8 sm:px-12 py-12" style="display: none;">
+        <section id="page-academics" class="page-section hidden max-w-7xl mx-auto px-8 sm:px-12 py-12">
             <div class="border-b border-gray-200 pb-5 mb-8">
                 <h2 id="live-acadTitle" class="editable-text font-serif text-4xl font-extrabold text-schoolGreen mt-1" data-db-field="acadTitle">Academic Programs</h2>
                 <p id="live-acadSubtitle" class="editable-text w-full text-sm text-gray-500 mt-2" data-db-field="acadSubtitle">Comprehensive curriculum certified by the Ministry of Education (Type 1AB Institution).</p>
@@ -262,18 +215,20 @@
             <div id="live-stats-container" class="flex flex-wrap justify-center gap-6 mb-12"></div>
             <div class="bg-white rounded shadow p-8 mb-12 border-l-4 border-schoolGreen">
                 <h3 id="live-acadVisTitle" class="editable-text font-serif text-2xl font-bold text-schoolGreen mb-4" data-db-field="acadVisTitle">Academic Structure & Vision</h3>
-                <p id="live-acadVisText" class="editable-text w-full text-gray-600 leading-relaxed text-justify" data-db-field="acadVisText">Central College Maharagama accommodates secondary education from Grade 6 through Grade 11...</p>
+                <p id="live-acadVisText" class="editable-text w-full text-gray-600 leading-relaxed text-justify" data-db-field="acadVisText">Central College Maharagama accommodates secondary education from Grade 6 through Grade 11 (Junior and Senior Secondary) in both Sinhala and English mediums, preparing students for the G.C.E. Ordinary Level examination. Our Collegiate section (Grades 12 and 13) offers specialized Advanced Level academic and vocational streams supported by equipped science, computer, and engineering technology laboratories.</p>
             </div>
             <h3 id="live-acadStreamsHead" class="editable-text font-serif text-3xl font-bold text-schoolGreen mb-6" data-db-field="acadStreamsHead">Advanced Level (A/L) Streams</h3>
             <div id="live-streams-container" class="flex flex-wrap justify-center gap-8 mb-12"></div>
             <div class="bg-schoolGreen text-white p-8 rounded shadow">
                 <h3 id="live-acadBenchTitle" class="editable-text font-serif text-2xl font-bold text-schoolGold mb-4" data-db-field="acadBenchTitle">National Examination Benchmarks</h3>
-                <div id="live-acadBenchList" class="editable-text w-full space-y-3 text-base text-gray-100 whitespace-pre-wrap border-l-2 border-schoolGold/30 pl-4" data-db-field="acadBenchList">• G.C.E. O/L 2025: Achieved a 92.0% qualification rate...</div>
+                <div id="live-acadBenchList" class="editable-text w-full space-y-3 text-base text-gray-100 whitespace-pre-wrap border-l-2 border-schoolGold/30 pl-4" data-db-field="acadBenchList">• G.C.E. O/L 2025: Achieved a 92.0% qualification rate for Advanced Level studies, exceeding provincial and national averages.
+• Subject Distinctions: 100% pass rates recorded across multiple core and aesthetic subjects.
+• G.C.E. A/L University Entrance: Consistently maintains over 70% university eligibility across Technology, Commerce, Science, and Arts streams.</div>
             </div>
         </section>
 
         <!-- ================= PAGE 4: SPORTS ================= -->
-        <section id="page-sports" class="page-section hidden max-w-7xl mx-auto px-8 sm:px-12 py-12" style="display: none;">
+        <section id="page-sports" class="page-section hidden max-w-7xl mx-auto px-8 sm:px-12 py-12">
             <div class="border-b border-gray-200 pb-5 mb-8">
                 <h2 id="live-spTitle" class="editable-text font-serif text-4xl font-extrabold text-schoolGreen mt-1" data-db-field="spTitle">Sports & Athletic Excellence</h2>
                 <p id="live-spSubtitle" class="editable-text w-full text-sm text-gray-500 mt-2" data-db-field="spSubtitle">Nurturing national competitors with discipline, strength, and team pride.</p>
@@ -282,7 +237,7 @@
             <div id="live-banner-container" class="relative w-full h-96 md:h-[650px] lg:h-[750px] rounded-3xl overflow-hidden mb-12 shadow-xl border-4 border-schoolGold bg-gray-200"></div>
             
             <div class="admin-only mb-12 justify-center">
-                <button type="button" onclick="window.addNewBannerSlide()" class="bg-schoolGreen text-white px-6 py-3 rounded-full font-bold shadow-lg hover:bg-darkGreen transition"><i class="fas fa-upload mr-2"></i> Upload New Banner Photo from PC</button>
+                <button onclick="addNewBannerSlide()" class="bg-schoolGreen text-white px-6 py-3 rounded-full font-bold shadow-lg hover:bg-darkGreen transition"><i class="fas fa-plus mr-2"></i> Add Sliding Banner Image</button>
             </div>
 
             <div class="bg-darkGreen text-white rounded shadow p-8 border-l-4 border-schoolGold mb-14">
@@ -299,7 +254,7 @@
         </section>
 
         <!-- ================= PAGE 5: CLUBS & SOCIETIES ================= -->
-        <section id="page-clubs" class="page-section hidden max-w-7xl mx-auto px-8 sm:px-12 py-12" style="display: none;">
+        <section id="page-clubs" class="page-section hidden max-w-7xl mx-auto px-8 sm:px-12 py-12">
             <div class="border-b border-gray-200 pb-5 mb-8">
                 <h2 id="live-clubTitle" class="editable-text font-serif text-4xl font-extrabold text-schoolGreen mt-1" data-db-field="clubTitle">Clubs & Societies</h2>
                 <p id="live-clubSubtitle" class="editable-text w-full text-sm text-gray-500 mt-2" data-db-field="clubSubtitle">Fostering leadership, creativity, and community service outside the classroom.</p>
@@ -309,7 +264,7 @@
         </section>
 
         <!-- ================= PAGE 6: ABOUT US ================= -->
-        <section id="page-about" class="page-section hidden max-w-7xl mx-auto px-8 sm:px-12 py-12" style="display: none;">
+        <section id="page-about" class="page-section hidden max-w-7xl mx-auto px-8 sm:px-12 py-12">
             <div class="border-b border-gray-200 pb-5 mb-10">
                 <h2 id="live-aboutTitle" class="editable-text font-serif text-4xl font-extrabold text-schoolGreen mt-1" data-db-field="aboutTitle">About Central College</h2>
                 <p id="live-aboutSubtitle" class="editable-text w-full text-sm text-gray-500 mt-2" data-db-field="aboutSubtitle">A legacy of educational excellence, guiding generations since our foundation.</p>
@@ -320,8 +275,7 @@
                 <div class="bg-white rounded-xl shadow-lg border-t-4 border-schoolGold overflow-hidden flex flex-col h-fit">
                     <div class="h-72 relative bg-schoolGreen/10 flex items-center justify-center">
                         <i class="fas fa-user-tie text-6xl text-schoolGreen absolute opacity-20"></i>
-                        <img id="live-prinImg" class="editable-img relative z-10 w-full h-full object-cover" data-db-field="prinImg" src="" style="opacity: 0;" onload="if(this.getAttribute('src')) this.style.opacity='1'" onerror="this.style.opacity='0'" alt="Principal">
-                        <span class="img-upload-badge"><i class="fas fa-upload"></i> Upload Principal Photo</span>
+                        <img id="live-prinImg" class="editable-img relative z-10 w-full h-full object-cover" data-db-field="prinImg" src="" style="opacity: 0;" onload="this.style.opacity='1'" onerror="this.style.opacity='0'" alt="Principal">
                     </div>
                     <div class="p-6 bg-darkGreen text-white text-center">
                         <h3 id="live-prinName" class="editable-text font-serif text-xl font-bold text-schoolGold" data-db-field="prinName">Mr. Principal Name</h3>
@@ -336,8 +290,7 @@
                 <div class="bg-white rounded-xl shadow-lg border-t-4 border-schoolGreen overflow-hidden flex flex-col h-fit">
                     <div class="h-72 relative bg-schoolGreen/10 flex items-center justify-center">
                         <i class="fas fa-user-tie text-6xl text-schoolGreen absolute opacity-20"></i>
-                        <img id="live-vicePrinImg" class="editable-img relative z-10 w-full h-full object-cover" data-db-field="vicePrinImg" src="" style="opacity: 0;" onload="if(this.getAttribute('src')) this.style.opacity='1'" onerror="this.style.opacity='0'" alt="Deputy Principal">
-                        <span class="img-upload-badge"><i class="fas fa-upload"></i> Upload Deputy Principal Photo</span>
+                        <img id="live-vicePrinImg" class="editable-img relative z-10 w-full h-full object-cover" data-db-field="vicePrinImg" src="" style="opacity: 0;" onload="this.style.opacity='1'" onerror="this.style.opacity='0'" alt="Deputy Principal">
                     </div>
                     <div class="p-6 bg-darkGreen text-white text-center">
                         <h3 id="live-vicePrinName" class="editable-text font-serif text-xl font-bold text-schoolGold" data-db-field="vicePrinName">Mrs. Deputy Principal Name</h3>
@@ -351,6 +304,7 @@
 
             <!-- History and Anthem -->
             <div class="grid md:grid-cols-2 gap-10 mb-16">
+                <!-- Heritage Section -->
                 <div class="bg-white p-8 md:p-10 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100 flex flex-col justify-center">
                     <h3 id="live-histTitle" class="editable-text font-serif text-3xl font-bold text-schoolGreen mb-4 flex items-center" data-db-field="histTitle">
                         <i class="fas fa-landmark text-schoolGold mr-4"></i>Our Heritage
@@ -360,6 +314,7 @@
                     <p id="live-histText2" class="editable-text w-full text-gray-600 leading-relaxed text-justify" data-db-field="histText2">Over the decades, the college has continuously upgraded its infrastructure, introducing modern science laboratories, advanced IT centers, and extensive sports facilities to support both academic rigor and extracurricular excellence for thousands of enrolled students.</p>
                 </div>
 
+                <!-- School Anthem Section -->
                 <div class="bg-schoolGreen/5 p-8 md:p-10 rounded-3xl border border-schoolGreen/20 relative overflow-hidden flex flex-col justify-center">
                     <i class="fas fa-music absolute -bottom-4 -right-4 text-8xl text-schoolGreen/10 transform -rotate-12"></i>
                     <h3 id="live-anthemTitle" class="editable-text font-serif text-2xl font-bold text-schoolGreen mb-4 text-center relative z-10" data-db-field="anthemTitle">College Anthem</h3>
@@ -380,8 +335,7 @@
             <div class="bg-white p-8 md:p-10 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100 mb-12">
                 <div class="h-64 md:h-96 w-full bg-gray-100 rounded-xl mb-8 relative overflow-hidden flex items-center justify-center border-4 border-schoolGold/20">
                     <i class="fas fa-users text-6xl text-gray-300 absolute"></i>
-                    <img id="live-prefectImg" class="editable-img relative z-10 w-full h-full object-cover" data-db-field="prefectImg" src="" style="opacity: 0;" onload="if(this.getAttribute('src')) this.style.opacity='1'" onerror="this.style.opacity='0'" alt="Prefect Board">
-                    <span class="img-upload-badge"><i class="fas fa-upload"></i> Upload Prefect Board Photo</span>
+                    <img id="live-prefectImg" class="editable-img relative z-10 w-full h-full object-cover" data-db-field="prefectImg" src="" style="opacity: 0;" onload="this.style.opacity='1'" onerror="this.style.opacity='0'" alt="Prefect Board">
                 </div>
                 <h3 id="live-prefectTitle" class="editable-text font-serif text-2xl md:text-3xl font-bold text-schoolGreen mb-4 text-center" data-db-field="prefectTitle">The Prefect Board (2025/2026)</h3>
                 <p id="live-prefectText" class="editable-text text-gray-600 text-center max-w-4xl mx-auto leading-relaxed" data-db-field="prefectText">The Prefect Board is the pinnacle of student leadership at Central College Maharagama. Handpicked for their exemplary discipline, academic standing, and commitment to the college, they serve as role models and act as the vital link between the student body and the administration.</p>
@@ -389,11 +343,11 @@
 
             <!-- Head Prefects -->
             <div class="grid md:grid-cols-2 gap-10 mb-12">
+                <!-- Head Boy -->
                 <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-8 flex flex-col xl:flex-row gap-6 items-center text-center xl:text-left">
                     <div class="w-32 h-32 flex-shrink-0 relative rounded-full overflow-hidden border-4 border-schoolGold bg-gray-100 flex items-center justify-center shadow-inner">
                         <i class="fas fa-user-graduate text-4xl text-gray-300 absolute"></i>
-                        <img id="live-headBoyImg" class="editable-img relative z-10 w-full h-full object-cover" data-db-field="headBoyImg" src="" style="opacity: 0;" onload="if(this.getAttribute('src')) this.style.opacity='1'" onerror="this.style.opacity='0'" alt="Head Boy">
-                        <span class="img-upload-badge"><i class="fas fa-camera"></i> Upload</span>
+                        <img id="live-headBoyImg" class="editable-img relative z-10 w-full h-full object-cover" data-db-field="headBoyImg" src="" style="opacity: 0;" onload="this.style.opacity='1'" onerror="this.style.opacity='0'" alt="Head Boy">
                     </div>
                     <div>
                         <h4 id="live-headBoyName" class="editable-text font-serif text-xl md:text-2xl font-bold text-schoolGreen" data-db-field="headBoyName">Head Boy Name</h4>
@@ -401,12 +355,11 @@
                         <p id="live-headBoyMsg" class="editable-text text-sm text-gray-600 italic leading-relaxed" data-db-field="headBoyMsg">"It is an honor to serve our alma mater. We strive to uphold the dignity of Central College and inspire our fellow brothers and sisters to achieve greatness in every endeavor."</p>
                     </div>
                 </div>
-
+                <!-- Head Girl -->
                 <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-8 flex flex-col xl:flex-row gap-6 items-center text-center xl:text-left">
                     <div class="w-32 h-32 flex-shrink-0 relative rounded-full overflow-hidden border-4 border-schoolGold bg-gray-100 flex items-center justify-center shadow-inner">
                         <i class="fas fa-user-graduate text-4xl text-gray-300 absolute"></i>
-                        <img id="live-headGirlImg" class="editable-img relative z-10 w-full h-full object-cover" data-db-field="headGirlImg" src="" style="opacity: 0;" onload="if(this.getAttribute('src')) this.style.opacity='1'" onerror="this.style.opacity='0'" alt="Head Girl">
-                        <span class="img-upload-badge"><i class="fas fa-camera"></i> Upload</span>
+                        <img id="live-headGirlImg" class="editable-img relative z-10 w-full h-full object-cover" data-db-field="headGirlImg" src="" style="opacity: 0;" onload="this.style.opacity='1'" onerror="this.style.opacity='0'" alt="Head Girl">
                     </div>
                     <div>
                         <h4 id="live-headGirlName" class="editable-text font-serif text-xl md:text-2xl font-bold text-schoolGreen" data-db-field="headGirlName">Head Girl Name</h4>
@@ -421,6 +374,7 @@
     <!-- Footer -->
     <footer class="bg-darkGreen text-white pt-14 pb-8 border-t-4 border-schoolGold mt-12 relative z-40">
         <div class="max-w-7xl mx-auto px-8 sm:px-12 grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+            <!-- Contact Info -->
             <div>
                 <h3 class="font-serif text-xl font-bold text-schoolGold mb-4">Contact Us</h3>
                 <div class="space-y-3 text-sm text-gray-300">
@@ -439,23 +393,28 @@
                 </div>
             </div>
 
+            <!-- Social Media & LMS Button -->
             <div class="md:text-right">
                 <h3 class="font-serif text-xl font-bold text-schoolGold mb-4">Connect With Us</h3>
-                <div class="flex md:justify-end space-x-4">
+                <div class="flex md:justify-end items-center space-x-4">
                     <a href="#" id="live-socialFb" data-db-field="socialFb" class="editable-link w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-schoolGold hover:text-darkGreen transition">
                         <i class="fab fa-facebook-f text-lg pointer-events-none"></i>
                     </a>
                     <a href="#" id="live-socialYt" data-db-field="socialYt" class="editable-link w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-schoolGold hover:text-darkGreen transition">
                         <i class="fab fa-youtube text-lg pointer-events-none"></i>
                     </a>
+                    <!-- LMS LINK BUTTON IN THE BOTTOM -->
+                    <a href="#" id="live-lmsLink" data-db-field="lmsLink" target="_blank" rel="noopener noreferrer" class="editable-link bg-schoolGold hover:bg-yellow-500 text-darkGreen font-bold px-4 py-2 rounded-full shadow text-xs uppercase tracking-wider transition inline-flex items-center">
+                        <i class="fas fa-graduation-cap mr-2 pointer-events-none"></i> School LMS
+                    </a>
                 </div>
                 <p class="text-xs text-gray-400 mt-4 max-w-xs md:ml-auto">Follow our official channels for the latest college updates, event livestreams, and announcements.</p>
             </div>
         </div>
 
-        <div class="max-w-7xl mx-auto px-8 sm:px-12 border-t border-gray-700 pt-6 flex flex-col sm:flex-row justify-between items-center text-xs text-gray-400">
+        <div class="max-w-7xl mx-auto px-8 sm:px-12 border-t border-gray-700 pt-6 flex flex-col sm:flex-row justify-between items-center text-xs text-gray-400 gap-4">
             <p>&copy; 2026 Central College Maharagama. All rights reserved.</p>
-            <button type="button" id="trigger-login-modal" class="hover:text-schoolGold transition focus:outline-none"><i class="fas fa-lock text-[10px]"></i> Webmaster Login</button>
+            <button id="trigger-login-modal" class="hover:text-schoolGold transition focus:outline-none"><i class="fas fa-lock text-[10px]"></i> Webmaster Login</button>
         </div>
     </footer>
 
@@ -470,8 +429,8 @@
             <div class="space-y-4 text-left">
                 <input type="email" id="admin-email" class="w-full px-4 py-2 rounded bg-gray-50 border border-gray-200 focus:border-schoolGold outline-none" placeholder="Email">
                 <input type="password" id="admin-password" class="w-full px-4 py-2 rounded bg-gray-50 border border-gray-200 focus:border-schoolGold outline-none" placeholder="Password">
-                <button type="button" id="login-btn" class="w-full bg-schoolGreen hover:bg-darkGreen text-white font-bold py-2 rounded shadow transition mt-2">Login to Edit Mode</button>
-                <button type="button" id="close-login-btn" class="w-full text-gray-500 text-sm underline mt-2">Cancel</button>
+                <button id="login-btn" class="w-full bg-schoolGreen hover:bg-darkGreen text-white font-bold py-2 rounded shadow transition mt-2">Login to Edit Mode</button>
+                <button id="close-login-btn" class="w-full text-gray-500 text-sm underline mt-2">Cancel</button>
             </div>
             <p id="login-error" class="text-red-500 text-sm mt-4 hidden font-semibold">Invalid credentials.</p>
         </div>
@@ -481,7 +440,7 @@
     <div id="admin-floating-bar" class="hidden fixed bottom-6 right-6 bg-white p-4 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.3)] z-[999999] border border-gray-200 flex flex-col space-y-3 w-64 transform transition-transform duration-300">
         <div class="flex items-center justify-between border-b pb-2">
             <span class="text-xs font-bold uppercase tracking-wider text-gray-500"><i class="fas fa-hammer mr-1"></i> Control Panel</span>
-            <button type="button" id="logout-btn" class="text-xs text-red-500 hover:text-red-700 font-bold">Logout</button>
+            <button id="logout-btn" class="text-xs text-red-500 hover:text-red-700 font-bold">Logout</button>
         </div>
         <div class="flex items-center justify-between">
             <span class="text-sm font-bold text-gray-800">Edit Mode</span>
@@ -490,47 +449,48 @@
                 <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-schoolGreen"></div>
             </label>
         </div>
-        <button type="button" id="save-live-edits-btn" class="hidden w-full bg-schoolGold hover:bg-yellow-500 text-darkGreen font-bold py-2 rounded shadow transition items-center justify-center">
+        <button id="save-live-edits-btn" class="hidden w-full bg-schoolGold hover:bg-yellow-500 text-darkGreen font-bold py-2 rounded shadow transition items-center justify-center">
             <i class="fas fa-save mr-2"></i> Save Page Changes
         </button>
         <p id="save-status" class="text-xs font-bold text-schoolGreen text-center hidden">Changes Live!</p>
     </div>
 
-    <!-- NEWS EDITOR MODAL (WITH DIRECT PC FILE PICKER) -->
+    <!-- NEWS EDITOR MODAL -->
     <div id="news-editor-modal" class="hidden fixed inset-0 bg-black/80 z-[999999] flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 border-t-4 border-schoolGold relative">
-            <button type="button" onclick="window.closeNewsEditor()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700"><i class="fas fa-times text-xl"></i></button>
+            <button onclick="closeNewsEditor()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700"><i class="fas fa-times text-xl"></i></button>
             <h2 id="news-editor-title" class="font-serif text-2xl font-bold text-schoolGreen mb-6">Create News Bulletin</h2>
             <input type="hidden" id="edit-news-id">
             <div class="space-y-4">
                 <div><label class="block text-sm font-bold text-gray-700 mb-1">Headline</label><input type="text" id="edit-news-headline" class="w-full px-4 py-2 rounded bg-gray-50 border border-gray-200 outline-none"></div>
                 <div><label class="block text-sm font-bold text-gray-700 mb-1">Category / Tag</label><input type="text" id="edit-news-tag" placeholder="e.g. Sports, Achievement, Notice" class="w-full px-4 py-2 rounded bg-gray-50 border border-gray-200 outline-none"></div>
                 <div><label class="block text-sm font-bold text-gray-700 mb-1">Full Story</label><textarea id="edit-news-content" rows="4" class="w-full px-4 py-2 rounded bg-gray-50 border border-gray-200 outline-none"></textarea></div>
-                
-                <!-- Direct PC Photo Picker for News -->
                 <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Attached Photos (Select straight from your computer)</label>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">Attached Photos (Optional)</label>
                     <div class="flex items-center gap-3 mb-2">
-                        <button type="button" onclick="document.getElementById('news-file-picker').click()" class="bg-schoolGold hover:bg-yellow-500 text-darkGreen px-4 py-2 rounded text-xs font-bold shadow transition flex items-center cursor-pointer">
-                            <i class="fas fa-upload mr-2"></i> Choose Photos from Computer
+                        <button type="button" onclick="document.getElementById('news-file-picker').click()" class="bg-schoolGold hover:bg-yellow-500 text-darkGreen px-4 py-2 rounded text-xs font-bold shadow transition flex items-center">
+                            <i class="fas fa-folder-open mr-2"></i> Choose Photos from Computer
                         </button>
                         <input type="file" id="news-file-picker" accept="image/*" multiple class="hidden">
-                        <button type="button" onclick="window.clearNewsImages()" class="text-xs text-red-500 hover:underline">Clear All</button>
+                        <button type="button" onclick="clearNewsImages()" class="text-xs text-red-500 hover:underline">Clear All</button>
                     </div>
                     <div id="news-img-preview" class="flex gap-2 overflow-x-auto py-1"></div>
+                    <input type="hidden" id="edit-news-image">
                 </div>
-                
-                <button type="button" id="save-news-record-btn" class="w-full bg-schoolGreen text-white font-bold py-3 rounded shadow mt-4">Save & Upload Bulletin</button>
+                <button id="save-news-record-btn" class="w-full bg-schoolGreen text-white font-bold py-3 rounded shadow mt-4">Save & Upload Bulletin</button>
             </div>
         </div>
     </div>
+
+    <!-- Hidden Global File Picker for Clicking Any Page Image -->
+    <input type="file" id="global-image-picker" accept="image/*" class="hidden">
 
     <!-- NEWS READER -->
     <div id="custom-modal" class="hidden fixed inset-0 bg-black/70 z-[99999] flex items-center justify-center p-4 transition-opacity">
         <div class="bg-white w-full max-w-3xl rounded-lg shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
             <div class="bg-schoolGreen px-6 py-4 flex justify-between items-center text-white">
                 <h3 id="modal-tag" class="font-bold uppercase tracking-wider text-xs text-schoolGold">News</h3>
-                <button type="button" onclick="window.closeNewsModal()" class="text-white hover:text-red-400 transition text-xl focus:outline-none"><i class="fas fa-times"></i></button>
+                <button onclick="closeNewsModal()" class="text-white hover:text-red-400 transition text-xl focus:outline-none"><i class="fas fa-times"></i></button>
             </div>
             <div class="p-6 md:p-8 overflow-y-auto relative">
                 <h2 id="modal-title" class="font-serif text-2xl md:text-3xl font-bold text-darkGreen mb-4">Title</h2>
@@ -540,94 +500,15 @@
             </div>
         </div>
     </div>
-    <div id="fs-modal" class="hidden fixed inset-0 z-[9999999] bg-black/95 flex items-center justify-center p-4"><button type="button" onclick="window.closeFullscreen()" class="absolute top-6 right-6 text-white text-4xl hover:text-gray-300 transition"><i class="fas fa-times"></i></button><img id="fs-img" class="max-w-full max-h-full object-contain shadow-2xl"></div>
+    <div id="fs-modal" class="hidden fixed inset-0 z-[9999999] bg-black/95 flex items-center justify-center p-4"><button onclick="closeFullscreen()" class="absolute top-6 right-6 text-white text-4xl hover:text-gray-300 transition"><i class="fas fa-times"></i></button><img id="fs-img" class="max-w-full max-h-full object-contain shadow-2xl"></div>
 
-    <!-- ==============================================
-         NAVIGATION & SPLASH CONTROLLER (RUNS IMMEDIATELY)
-         ============================================== -->
-    <script>
-        window.switchPage = function(pageId) {
-            document.querySelectorAll('.page-section').forEach(section => {
-                section.classList.add('hidden');
-                section.style.display = 'none';
-            });
-
-            const targetSection = document.getElementById('page-' + pageId);
-            if (targetSection) {
-                targetSection.classList.remove('hidden');
-                targetSection.style.display = 'block';
-            }
-
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('text-white', 'border-b-2', 'border-schoolGold');
-                btn.classList.add('text-gray-200');
-            });
-            const activeBtn = document.getElementById('nav-' + pageId);
-            if (activeBtn) {
-                activeBtn.classList.remove('text-gray-200');
-                activeBtn.classList.add('text-white', 'border-b-2', 'border-schoolGold');
-            }
-
-            document.querySelectorAll('.mob-nav-btn').forEach(btn => {
-                btn.classList.remove('text-white', 'border-l-2', 'border-schoolGold');
-                btn.classList.add('text-gray-300');
-            });
-            const mobActiveBtn = document.getElementById('mob-nav-' + pageId);
-            if (mobActiveBtn) {
-                mobActiveBtn.classList.remove('text-gray-300');
-                mobActiveBtn.classList.add('text-white', 'border-l-2', 'border-schoolGold');
-            }
-
-            const mobileMenu = document.getElementById('mobile-menu');
-            if (mobileMenu) {
-                mobileMenu.classList.add('hidden');
-            }
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        };
-
-        window.navigateIfNotEditing = function(pageId) {
-            if (document.body.classList.contains('edit-mode-active')) return;
-            window.switchPage(pageId);
-        };
-
-        window.toggleMobileMenu = function() {
-            const menu = document.getElementById('mobile-menu');
-            if (menu) menu.classList.toggle('hidden');
-        };
-
-        // Smooth single-run Splash Screen dismissal
-        window.addEventListener('DOMContentLoaded', () => {
-            window.switchPage('home');
-            setTimeout(() => {
-                const splash = document.getElementById('splash-screen');
-                if (splash && !splash.classList.contains('hidden')) {
-                    splash.style.opacity = '0';
-                    setTimeout(() => {
-                        splash.classList.add('hidden');
-                        splash.style.display = 'none';
-                    }, 700);
-                }
-            }, 4200);
-        });
-    </script>
-
-    <!-- ==============================================
-         FIREBASE ENGINE & CMS LOGIC
-         ============================================== -->
+    <!-- FIREBASE ENGINE & CMS LOGIC -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
         import { getFirestore, collection, getDocs, query, orderBy, doc, getDoc, setDoc, addDoc, updateDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyBfWbak0ue5zxr99Ll181wPxnw72nSnd_c",
-            authDomain: "ccm---website.firebaseapp.com",
-            projectId: "ccm---website",
-            storageBucket: "ccm---website.firebasestorage.app",
-            messagingSenderId: "44549687836",
-            appId: "1:44549687836:web:480ab4ed5d70449dfd6dd9"
-        };
+        const firebaseConfig = { apiKey: "AIzaSyBfWbak0ue5zxr99Ll181wPxnw72nSnd_c", authDomain: "ccm---website.firebaseapp.com", projectId: "ccm---website", storageBucket: "ccm---website.firebasestorage.app", messagingSenderId: "44549687836", appId: "1:44549687836:web:480ab4ed5d70449dfd6dd9" };
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
@@ -636,14 +517,7 @@
         let bannerInterval = null;
         let currentNewsImages = [];
 
-        function isValidImgSrc(val) {
-            if (!val || typeof val !== 'string') return false;
-            const trimmed = val.trim();
-            if (trimmed === '' || trimmed.startsWith('file:') || trimmed.includes('localhost') || trimmed.includes('127.0.0.1') || trimmed.endsWith('/index.html')) return false;
-            return true;
-        }
-
-        function compressImageFile(file, maxWidth = 900, quality = 0.65) {
+        function compressImageFile(file, maxWidth = 1000, quality = 0.7) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
                 reader.onload = (event) => {
@@ -687,8 +561,7 @@
 
         function renderDynamicArrays(data) {
             // --- DYNAMIC SPORTS BANNER SLIDER ---
-            const rawBanners = Array.isArray(data.sportsBanners) ? data.sportsBanners.filter(isValidImgSrc) : [];
-            const banners = rawBanners.length > 0 ? rawBanners : ["sports_banner1.jpg", "sports_banner2.jpg", "sports_banner3.jpg", "sports_banner4.jpg", "sports_banner5.jpg"];
+            const banners = data.sportsBanners || ["sports_banner1.jpg", "sports_banner2.jpg", "sports_banner3.jpg", "sports_banner4.jpg", "sports_banner5.jpg"];
             const bannerContainer = document.getElementById('live-banner-container');
             bannerContainer.innerHTML = '';
             
@@ -696,9 +569,8 @@
                 const opacity = index === 0 ? 'opacity-100' : 'opacity-0';
                 bannerContainer.innerHTML += `
                 <div class="sport-slide absolute inset-0 transition-opacity duration-1000 ${opacity}" data-index="${index}">
-                    <button type="button" class="admin-only delete-banner-btn absolute top-4 right-4 bg-red-600 text-white rounded-full w-8 h-8 items-center justify-center text-sm z-20 transition hover:scale-110 shadow-lg" onclick="window.removeBannerSlide(${index})"><i class="fas fa-times"></i></button>
+                    <button class="admin-only delete-banner-btn absolute top-4 right-4 bg-red-600 text-white rounded-full w-8 h-8 items-center justify-center text-sm z-20 transition hover:scale-110 shadow-lg" onclick="removeBannerSlide(${index})"><i class="fas fa-times"></i></button>
                     <img src="${imgUrl}" class="editable-img w-full h-full object-cover">
-                    <span class="img-upload-badge"><i class="fas fa-upload"></i> Click Banner to Replace Photo</span>
                 </div>`;
             });
 
@@ -723,57 +595,57 @@
             const statsContainer = document.getElementById('live-stats-container');
             statsContainer.innerHTML = '';
             stats.forEach(st => {
-                statsContainer.innerHTML += `<div class="dynamic-stat-card relative bg-white p-6 rounded shadow border-t-4 border-${st.color} text-center flex-1 min-w-[200px] max-w-[280px]" data-color="${st.color}"><button type="button" class="admin-only delete-card-btn absolute -top-3 -right-3 bg-red-600 text-white rounded-full w-6 h-6 items-center justify-center text-xs z-10 transition hover:scale-110 shadow-lg" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button><span class="stat-num editable-text font-serif block text-4xl font-extrabold text-${st.color}">${st.num}</span><span class="stat-lbl editable-text w-full text-xs text-gray-500 uppercase tracking-widest font-semibold mt-2 block">${st.lbl}</span></div>`;
+                statsContainer.innerHTML += `<div class="dynamic-stat-card relative bg-white p-6 rounded shadow border-t-4 border-${st.color} text-center flex-1 min-w-[200px] max-w-[280px]" data-color="${st.color}"><button class="admin-only delete-card-btn absolute -top-3 -right-3 bg-red-600 text-white rounded-full w-6 h-6 items-center justify-center text-xs z-10 transition hover:scale-110 shadow-lg" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button><span class="stat-num editable-text font-serif block text-4xl font-extrabold text-${st.color}">${st.num}</span><span class="stat-lbl editable-text w-full text-xs text-gray-500 uppercase tracking-widest font-semibold mt-2 block">${st.lbl}</span></div>`;
             });
-            statsContainer.innerHTML += `<button type="button" class="admin-only add-stat-btn bg-gray-100 border-2 border-dashed border-gray-300 text-gray-400 rounded flex-1 min-w-[200px] max-w-[280px] p-6 flex-col items-center justify-center hover:bg-gray-200 hover:text-gray-600 transition" onclick="window.addNewStat()"><i class="fas fa-plus text-2xl mb-2"></i><span class="text-xs font-bold uppercase">Add Stat</span></button>`;
+            statsContainer.innerHTML += `<button class="admin-only add-stat-btn bg-gray-100 border-2 border-dashed border-gray-300 text-gray-400 rounded flex-1 min-w-[200px] max-w-[280px] p-6 flex-col items-center justify-center hover:bg-gray-200 hover:text-gray-600 transition" onclick="addNewStat()"><i class="fas fa-plus text-2xl mb-2"></i><span class="text-xs font-bold uppercase">Add Stat</span></button>`;
 
             // --- ACADEMICS STREAMS ---
             const streams = data.academicsStreams || [
-                { title: "Technology Stream", desc: "Our strongest and most sought-after stream...", list: "• Engineering Technology (ET)\n• Biosystems Technology (BST)", icon: "fa-microchip", color: "schoolGold" },
-                { title: "Commerce Stream", desc: "Strong academic track...", list: "• Accounting & Business Statistics\n• Business Studies", icon: "fa-chart-pie", color: "schoolGreen" },
-                { title: "Arts & Humanities Stream", desc: "Fostering deep cultural excellence.", list: "• Sinhala & Political Science\n• Geography & Buddhist Civilization", icon: "fa-book-open", color: "schoolGreen" },
-                { title: "13-Year Guaranteed Education", desc: "Practical NVQ-aligned career pathways.", list: "• Tourism & Hospitality Studies\n• Automobile & Mechanical Studies", icon: "fa-tools", color: "schoolGold" }
+                { title: "Technology Stream", desc: "Our strongest and most sought-after stream, combining modern engineering principles with practical laboratory innovation.", list: "• Engineering Technology (ET)\n• Biosystems Technology (BST)\n• Science for Technology (SFT)\n• Information & Communication Technology (ICT)", icon: "fa-microchip", color: "schoolGold" },
+                { title: "Commerce Stream", desc: "A strong academic track developing future financial leaders, corporate managers, and entrepreneurs.", list: "• Accounting & Business Statistics\n• Business Studies\n• Economics & ICT", icon: "fa-chart-pie", color: "schoolGreen" },
+                { title: "Arts & Humanities Stream", desc: "Fostering deep cultural excellence, analytical thinking, and communication across humanities and creative arts.", list: "• Sinhala, Political Science & Media Studies\n• Geography & Buddhist Civilization\n• Oriental Music, Dancing, Drama & Art", icon: "fa-book-open", color: "schoolGreen" },
+                { title: "13-Year Guaranteed Education", desc: "Practical NVQ-aligned vocational career pathways preparing students directly for industry and technical professions.", list: "• Tourism & Hospitality Studies\n• Automobile & Mechanical Studies\n• Construction & Fashion Design", icon: "fa-tools", color: "schoolGold" }
             ];
             const strContainer = document.getElementById('live-streams-container');
             strContainer.innerHTML = '';
             streams.forEach(st => {
-                strContainer.innerHTML += `<div class="dynamic-stream-card relative bg-white p-6 rounded shadow border-t-4 border-${st.color} flex flex-col w-full md:w-[calc(50%-1rem)]" data-color="${st.color}" data-icon="${st.icon}"><button type="button" class="admin-only delete-card-btn absolute -top-3 -right-3 bg-red-600 text-white rounded-full w-6 h-6 items-center justify-center text-xs z-10 transition hover:scale-110 shadow-lg" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button><h4 class="font-serif text-xl font-bold text-schoolGreen mb-3"><i class="fas ${st.icon} text-${st.color} mr-2"></i><span class="stream-title editable-text">${st.title}</span></h4><p class="stream-desc editable-text w-full text-sm text-gray-600 mb-4">${st.desc}</p><div class="stream-list editable-text w-full text-sm text-gray-700 whitespace-pre-wrap flex-grow border-l-2 border-gray-50 pl-3">${st.list}</div></div>`;
+                strContainer.innerHTML += `<div class="dynamic-stream-card relative bg-white p-6 rounded shadow border-t-4 border-${st.color} flex flex-col w-full md:w-[calc(50%-1rem)]" data-color="${st.color}" data-icon="${st.icon}"><button class="admin-only delete-card-btn absolute -top-3 -right-3 bg-red-600 text-white rounded-full w-6 h-6 items-center justify-center text-xs z-10 transition hover:scale-110 shadow-lg" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button><h4 class="font-serif text-xl font-bold text-schoolGreen mb-3"><i class="fas ${st.icon} text-${st.color} mr-2"></i><span class="stream-title editable-text">${st.title}</span></h4><p class="stream-desc editable-text w-full text-sm text-gray-600 mb-4">${st.desc}</p><div class="stream-list editable-text w-full text-sm text-gray-700 whitespace-pre-wrap flex-grow border-l-2 border-gray-50 pl-3">${st.list}</div></div>`;
             });
-            strContainer.innerHTML += `<button type="button" class="admin-only add-stream-btn bg-gray-100 border-2 border-dashed border-gray-300 text-gray-400 rounded flex-col items-center justify-center p-8 hover:bg-gray-200 hover:text-gray-600 transition w-full md:w-[calc(50%-1rem)]" onclick="window.addNewStream()"><i class="fas fa-plus text-3xl mb-2"></i><span class="text-sm font-bold uppercase">Add Stream Card</span></button>`;
+            strContainer.innerHTML += `<button class="admin-only add-stream-btn bg-gray-100 border-2 border-dashed border-gray-300 text-gray-400 rounded flex-col items-center justify-center p-8 hover:bg-gray-200 hover:text-gray-600 transition w-full md:w-[calc(50%-1rem)]" onclick="addNewStream()"><i class="fas fa-plus text-3xl mb-2"></i><span class="text-sm font-bold uppercase">Add Stream Card</span></button>`;
 
             // --- SPORTS CARDS ---
             const sports = data.sportsList || [
-                { title: "Centralian Rugby", desc: "Rugby is one of the premier sporting flagships of Central College Maharagama.", icon: "fa-football-ball", color: "schoolGreen", img: "" },
-                { title: "Football & Futsal", desc: "With our spacious grounds, soccer has flourished...", icon: "fa-futbol", color: "schoolGold", img: "" },
-                { title: "Volleyball", desc: "The national sport of Sri Lanka thrives at Central College...", icon: "fa-volleyball-ball", color: "schoolGreen", img: "" },
-                { title: "Track & Field Athletics", desc: "Our athletes consistently dominate the tracks...", icon: "fa-stopwatch", color: "schoolGold", img: "" }
+                { title: "Centralian Rugby", desc: "Rugby is one of the premier sporting flagships of Central College Maharagama, crowned Champions of the All-Island Inter-School U-14 Tournament (2026) and Inter-School Bowl Champions (2024).", icon: "fa-football-ball", color: "schoolGreen", img: "" },
+                { title: "Football & Futsal", desc: "With our spacious grounds, soccer has flourished at both provincial and national levels, securing the Western Provincial Sports Tournament Championship (2026) and All-Island U-20 Girls Championship (2024).", icon: "fa-futbol", color: "schoolGold", img: "" },
+                { title: "Volleyball", desc: "The national sport of Sri Lanka thrives at Central College, with our squads emerging as Western Province U-20 Girls Champions and Boys Runners-Up in 2026.", icon: "fa-volleyball-ball", color: "schoolGreen", img: "" },
+                { title: "Track & Field Athletics", desc: "Our athletes consistently dominate the tracks at Zonal and Provincial meets, securing 1st place victories in the 5000m and 3000m distance events alongside relay medals.", icon: "fa-stopwatch", color: "schoolGold", img: "" }
             ];
             const spContainer = document.getElementById('live-sports-container');
             spContainer.innerHTML = '';
             sports.forEach((sp, index) => {
                 const isOdd = (index % 2 !== 0); const orderClass = isOdd ? 'md:order-last' : ''; const alignClass = isOdd ? 'md:text-right' : 'md:text-left'; const bgClass = (sp.color === 'schoolGreen') ? 'bg-schoolGreen/10' : 'bg-yellow-50';
-                const cleanImg = isValidImgSrc(sp.img) ? sp.img : '';
-                spContainer.innerHTML += `<div class="dynamic-sport-card relative bg-white rounded-3xl p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] flex flex-col md:flex-row items-center gap-8 border border-gray-100 group" data-color="${sp.color}" data-icon="${sp.icon}"><button type="button" class="admin-only delete-card-btn absolute top-4 right-4 bg-red-600 text-white rounded-full w-8 h-8 items-center justify-center text-sm z-10 transition hover:scale-110 shadow-lg" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button><div class="sport-icon-box w-full md:w-2/5 h-64 ${bgClass} rounded-2xl overflow-hidden flex items-center justify-center text-${sp.color} text-6xl flex-shrink-0 relative ${orderClass}"><i class="fas ${sp.icon}"></i><img class="sport-img editable-img absolute inset-0 w-full h-full object-cover rounded-2xl" style="${cleanImg ? 'opacity: 1;' : 'opacity: 0;'}" onload="if(this.getAttribute('src')) this.style.opacity='1'" onerror="this.style.opacity='0'" src="${cleanImg}"><span class="img-upload-badge"><i class="fas fa-upload"></i> Upload Sport Photo</span></div><div class="text-center ${alignClass} flex-grow w-full"><h4 class="sport-title editable-text block font-serif font-bold text-2xl md:text-3xl mb-3 text-gray-800">${sp.title}</h4><p class="sport-desc editable-text w-full text-gray-600 leading-relaxed text-sm md:text-base">${sp.desc}</p></div></div>`;
+                spContainer.innerHTML += `<div class="dynamic-sport-card relative bg-white rounded-3xl p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] flex flex-col md:flex-row items-center gap-8 border border-gray-100 group" data-color="${sp.color}" data-icon="${sp.icon}"><button class="admin-only delete-card-btn absolute top-4 right-4 bg-red-600 text-white rounded-full w-8 h-8 items-center justify-center text-sm z-10 transition hover:scale-110 shadow-lg" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button><div class="sport-icon-box w-full md:w-2/5 h-64 ${bgClass} rounded-2xl overflow-hidden flex items-center justify-center text-${sp.color} text-6xl flex-shrink-0 relative ${orderClass}"><i class="fas ${sp.icon}"></i><img class="sport-img editable-img absolute inset-0 w-full h-full object-cover rounded-2xl" style="${sp.img ? 'opacity: 1;' : 'opacity: 0;'}" onload="if(this.src && !this.src.endsWith('undefined')) this.style.opacity='1'" onerror="this.style.opacity='0'" src="${sp.img || ''}"></div><div class="text-center ${alignClass} flex-grow w-full"><h4 class="sport-title editable-text block font-serif font-bold text-2xl md:text-3xl mb-3 text-gray-800">${sp.title}</h4><p class="sport-desc editable-text w-full text-gray-600 leading-relaxed text-sm md:text-base">${sp.desc}</p></div></div>`;
             });
-            spContainer.innerHTML += `<button type="button" class="admin-only add-sport-btn bg-white rounded-3xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.06)] border-2 border-dashed border-gray-300 text-gray-400 flex flex-col items-center justify-center hover:bg-gray-50 transition w-full" onclick="window.addNewSport()"><i class="fas fa-plus text-4xl mb-4"></i><span class="text-lg font-bold uppercase">Add Sport Discipline</span></button>`;
+            spContainer.innerHTML += `<button class="admin-only add-sport-btn bg-white rounded-3xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.06)] border-2 border-dashed border-gray-300 text-gray-400 flex flex-col items-center justify-center hover:bg-gray-50 transition w-full" onclick="addNewSport()"><i class="fas fa-plus text-4xl mb-4"></i><span class="text-lg font-bold uppercase">Add Sport Discipline</span></button>`;
 
             // --- CLUBS & SOCIETIES CARDS ---
             const clubs = data.clubsList || [
-                { title: "Science Society", desc: "Promoting scientific inquiry, hosting regional quiz competitions, and organizing the annual Science Day.", leader: "TIC: Mrs. Perera", img: "" },
-                { title: "Media Unit", desc: "Handling live school broadcasts, event photography, videography, and the morning assembly coordination.", leader: "President: Kasun Silva", img: "" },
-                { title: "Red Cross Society", desc: "Providing comprehensive first aid cover for all school events, sports meets, and public health campaigns.", leader: "TIC: Mr. Bandara", img: "" }
+                { title: "Science & Technology Society", desc: "Promoting scientific inquiry, hosting regional quiz competitions, and organizing annual Science & Engineering exhibitions.", leader: "TIC: Science & Technology Faculty", img: "" },
+                { title: "Media & Broadcasting Unit", desc: "Handling live school broadcasts, event photography, videography, announcing, and morning assembly coordination.", leader: "TIC: Media Unit Advisory Board", img: "" },
+                { title: "Red Cross & First Aid Society", desc: "Providing comprehensive first aid cover for all school events, sports meets, and public health awareness campaigns.", leader: "TIC: Red Cross Youth Circle", img: "" },
+                { title: "Aesthetic, Dance & Choir Unit", desc: "Home to All-Island Traditional Dance winners and Raagadhari Group Song champions representing the college nationally.", leader: "TIC: Aesthetic Arts Department", img: "" },
+                { title: "English Literary & Drama Club", desc: "Developing public speaking, debating, creative writing, and producing award-winning Zonal and Provincial English dramas.", leader: "TIC: English Faculty", img: "" },
+                { title: "ICT & Coding Society", desc: "Spearheading digital literacy, web development, hardware prototyping, and inter-school ICT competitions.", leader: "TIC: ICT Department", img: "" }
             ];
             const clubContainer = document.getElementById('live-clubs-container');
             clubContainer.innerHTML = '';
             clubs.forEach((club) => {
-                const cleanImg = isValidImgSrc(club.img) ? club.img : '';
                 clubContainer.innerHTML += `
                 <div class="dynamic-club-card relative bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden flex flex-col group">
-                    <button type="button" class="admin-only delete-card-btn absolute top-3 right-3 bg-red-600 text-white rounded-full w-8 h-8 items-center justify-center text-sm z-10 transition hover:scale-110 shadow-lg" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>
+                    <button class="admin-only delete-card-btn absolute top-3 right-3 bg-red-600 text-white rounded-full w-8 h-8 items-center justify-center text-sm z-10 transition hover:scale-110 shadow-lg" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>
                     <div class="h-48 bg-schoolGreen/10 relative flex items-center justify-center text-schoolGreen text-4xl">
                         <i class="fas fa-users"></i>
-                        <img class="club-img editable-img absolute inset-0 w-full h-full object-cover" style="${cleanImg ? 'opacity: 1;' : 'opacity: 0;'}" onload="if(this.getAttribute('src')) this.style.opacity='1'" onerror="this.style.opacity='0'" src="${cleanImg}">
-                        <span class="img-upload-badge"><i class="fas fa-upload"></i> Upload Club Photo</span>
+                        <img class="club-img editable-img absolute inset-0 w-full h-full object-cover" style="${club.img ? 'opacity: 1;' : 'opacity: 0;'}" onload="if(this.src && !this.src.endsWith('undefined')) this.style.opacity='1'" onerror="this.style.opacity='0'" src="${club.img || ''}">
                     </div>
                     <div class="p-6 flex-grow flex flex-col">
                         <h4 class="club-title editable-text font-serif font-bold text-xl text-schoolGreen mb-2">${club.title}</h4>
@@ -782,12 +654,12 @@
                     </div>
                 </div>`;
             });
-            clubContainer.innerHTML += `<button type="button" class="admin-only add-club-btn bg-gray-50 rounded-xl shadow-inner border-2 border-dashed border-gray-300 text-gray-400 flex flex-col items-center justify-center hover:bg-gray-100 transition min-h-[300px]" onclick="window.addNewClub()"><i class="fas fa-plus text-4xl mb-4"></i><span class="text-lg font-bold uppercase">Add Club</span></button>`;
+            clubContainer.innerHTML += `<button class="admin-only add-club-btn bg-gray-50 rounded-xl shadow-inner border-2 border-dashed border-gray-300 text-gray-400 flex flex-col items-center justify-center hover:bg-gray-100 transition min-h-[300px]" onclick="addNewClub()"><i class="fas fa-plus text-4xl mb-4"></i><span class="text-lg font-bold uppercase">Add Club</span></button>`;
 
             if(document.body.classList.contains('edit-mode-active')) {
                 document.querySelectorAll('.editable-text').forEach(el => el.contentEditable = true);
-                document.querySelectorAll('.editable-img, .editable-bg').forEach(el => el.addEventListener('click', window.handleImageClick));
-                document.querySelectorAll('.editable-link').forEach(el => el.addEventListener('click', window.handleLinkClick));
+                document.querySelectorAll('.editable-img, .editable-bg').forEach(el => el.addEventListener('click', handleImageClick));
+                document.querySelectorAll('.editable-link').forEach(el => el.addEventListener('click', handleLinkClick));
             }
         }
 
@@ -814,7 +686,7 @@
             e.preventDefault();
             const targetEl = e.currentTarget;
             const currentUrl = targetEl.getAttribute('href') === '#' ? 'https://' : targetEl.getAttribute('href');
-            const newUrl = prompt("Enter the full URL for this social media page:", currentUrl);
+            const newUrl = prompt("Enter the full URL for this link (Social Media or LMS):", currentUrl);
             if(newUrl && newUrl.trim() !== "") {
                 targetEl.setAttribute('href', newUrl.trim());
             }
@@ -845,13 +717,13 @@
 
         window.addNewStat = function() {
             const btn = document.querySelector('.add-stat-btn'); const color = Math.random() > 0.5 ? 'schoolGreen' : 'schoolGold';
-            btn.insertAdjacentHTML('beforebegin', `<div class="dynamic-stat-card relative bg-white p-6 rounded shadow border-t-4 border-${color} text-center flex-1 min-w-[200px] max-w-[280px]" data-color="${color}"><button type="button" class="admin-only delete-card-btn absolute -top-3 -right-3 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs z-10 transition hover:scale-110 shadow-lg" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button><span class="stat-num editable-text font-serif block text-4xl font-extrabold text-${color}">000</span><span class="stat-lbl editable-text w-full text-xs text-gray-500 uppercase tracking-widest font-semibold mt-2 block">New Label</span></div>`);
+            btn.insertAdjacentHTML('beforebegin', `<div class="dynamic-stat-card relative bg-white p-6 rounded shadow border-t-4 border-${color} text-center flex-1 min-w-[200px] max-w-[280px]" data-color="${color}"><button class="admin-only delete-card-btn absolute -top-3 -right-3 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs z-10 transition hover:scale-110 shadow-lg" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button><span class="stat-num editable-text font-serif block text-4xl font-extrabold text-${color}">000</span><span class="stat-lbl editable-text w-full text-xs text-gray-500 uppercase tracking-widest font-semibold mt-2 block">New Label</span></div>`);
             btn.previousElementSibling.querySelectorAll('.editable-text').forEach(el => el.contentEditable = true);
         }
 
         window.addNewStream = function() {
             const btn = document.querySelector('.add-stream-btn'); const color = Math.random() > 0.5 ? 'schoolGreen' : 'schoolGold';
-            btn.insertAdjacentHTML('beforebegin', `<div class="dynamic-stream-card relative bg-white p-6 rounded shadow border-t-4 border-${color} flex flex-col w-full md:w-[calc(50%-1rem)]" data-color="${color}" data-icon="fa-book"><button type="button" class="admin-only delete-card-btn absolute -top-3 -right-3 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs z-10 transition hover:scale-110 shadow-lg" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button><h4 class="font-serif text-xl font-bold text-schoolGreen mb-3"><i class="fas fa-book text-${color} mr-2"></i><span class="stream-title editable-text">New Subject Stream</span></h4><p class="stream-desc editable-text w-full text-sm text-gray-600 mb-4">Add a brief description of this academic path.</p><div class="stream-list editable-text w-full text-sm text-gray-700 whitespace-pre-wrap flex-grow border-l-2 border-gray-50 pl-3">• Item 1\n• Item 2</div></div>`);
+            btn.insertAdjacentHTML('beforebegin', `<div class="dynamic-stream-card relative bg-white p-6 rounded shadow border-t-4 border-${color} flex flex-col w-full md:w-[calc(50%-1rem)]" data-color="${color}" data-icon="fa-book"><button class="admin-only delete-card-btn absolute -top-3 -right-3 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs z-10 transition hover:scale-110 shadow-lg" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button><h4 class="font-serif text-xl font-bold text-schoolGreen mb-3"><i class="fas fa-book text-${color} mr-2"></i><span class="stream-title editable-text">New Subject Stream</span></h4><p class="stream-desc editable-text w-full text-sm text-gray-600 mb-4">Add a brief description of this academic path.</p><div class="stream-list editable-text w-full text-sm text-gray-700 whitespace-pre-wrap flex-grow border-l-2 border-gray-50 pl-3">• Item 1\n• Item 2</div></div>`);
             btn.previousElementSibling.querySelectorAll('.editable-text').forEach(el => el.contentEditable = true);
         }
 
@@ -868,11 +740,10 @@
 
             btn.insertAdjacentHTML('beforebegin', `
                 <div class="dynamic-sport-card relative bg-white rounded-3xl p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] flex flex-col md:flex-row items-center gap-8 border border-gray-100 group" data-color="${color}" data-icon="fa-trophy">
-                    <button type="button" class="admin-only delete-card-btn absolute top-4 right-4 bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm z-10 transition hover:scale-110 shadow-lg" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>
+                    <button class="admin-only delete-card-btn absolute top-4 right-4 bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm z-10 transition hover:scale-110 shadow-lg" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>
                     <div class="sport-icon-box w-full md:w-2/5 h-64 ${bgClass} rounded-2xl overflow-hidden flex items-center justify-center text-${color} text-6xl flex-shrink-0 relative ${orderClass}">
                         <i class="fas fa-trophy"></i>
                         <img class="sport-img editable-img absolute inset-0 w-full h-full object-cover rounded-2xl" style="opacity: 0;" src="">
-                        <span class="img-upload-badge"><i class="fas fa-upload"></i> Upload Sport Photo</span>
                     </div>
                     <div class="text-center ${alignClass} flex-grow w-full">
                         <h4 class="sport-title editable-text block font-serif font-bold text-2xl md:text-3xl mb-3 text-gray-800">New Sport</h4>
@@ -881,18 +752,17 @@
                 </div>`);
             const newCard = btn.previousElementSibling;
             newCard.querySelectorAll('.editable-text').forEach(el => el.contentEditable = true);
-            newCard.querySelectorAll('.editable-img').forEach(el => el.addEventListener('click', window.handleImageClick));
+            newCard.querySelectorAll('.editable-img').forEach(el => el.addEventListener('click', handleImageClick));
         }
 
         window.addNewClub = function() {
             const btn = document.querySelector('.add-club-btn');
             btn.insertAdjacentHTML('beforebegin', `
                 <div class="dynamic-club-card relative bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden flex flex-col group">
-                    <button type="button" class="admin-only delete-card-btn absolute top-3 right-3 bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm z-10 transition hover:scale-110 shadow-lg" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>
+                    <button class="admin-only delete-card-btn absolute top-3 right-3 bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm z-10 transition hover:scale-110 shadow-lg" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>
                     <div class="h-48 bg-schoolGreen/10 relative flex items-center justify-center text-schoolGreen text-4xl">
                         <i class="fas fa-users"></i>
                         <img class="club-img editable-img absolute inset-0 w-full h-full object-cover" style="opacity: 0;" src="">
-                        <span class="img-upload-badge"><i class="fas fa-upload"></i> Upload Club Photo</span>
                     </div>
                     <div class="p-6 flex-grow flex flex-col">
                         <h4 class="club-title editable-text font-serif font-bold text-xl text-schoolGreen mb-2">New Club Name</h4>
@@ -902,7 +772,7 @@
                 </div>`);
             const newCard = btn.previousElementSibling;
             newCard.querySelectorAll('.editable-text').forEach(el => el.contentEditable = true);
-            newCard.querySelectorAll('.editable-img').forEach(el => el.addEventListener('click', window.handleImageClick));
+            newCard.querySelectorAll('.editable-img').forEach(el => el.addEventListener('click', handleImageClick));
         }
 
         window.fetchLiveNews = async function() {
@@ -915,48 +785,27 @@
                     const safeTitle = (news.title || 'Update'); const safeTag = (news.tag || 'Update');
                     const imgsArr = Array.isArray(news.images) ? news.images : [];
                     const imageBadge = imgsArr.length > 0 ? `<span class="absolute top-4 right-4 bg-black/60 text-white text-[10px] px-2 py-1 rounded font-bold z-10"><i class="fas fa-camera mr-1"></i> ${imgsArr.length}</span>` : '';
-                    container.innerHTML += `<div class="relative bg-white rounded shadow overflow-hidden border-t-2 border-schoolGold group transform hover:-translate-y-1 transition duration-300 flex flex-col">${imageBadge}<div class="admin-only absolute top-4 right-4 gap-2 hidden z-20"><button type="button" onclick="window.editNewsRecord('${id}')" class="bg-blue-600 text-white w-8 h-8 rounded shadow flex items-center justify-center hover:bg-blue-700"><i class="fas fa-edit"></i></button><button type="button" onclick="window.deleteNewsRecord('${id}')" class="bg-red-600 text-white w-8 h-8 rounded shadow flex items-center justify-center hover:bg-red-700"><i class="fas fa-trash"></i></button></div><div class="p-6 flex-grow flex flex-col"><span class="text-xs font-bold text-schoolGold uppercase tracking-wider">${safeTag}</span><h4 class="font-serif text-xl font-bold text-schoolGreen mt-2 mb-3">${safeTitle}</h4><p class="text-sm text-gray-600 mb-6 leading-relaxed flex-grow line-clamp-3">${news.content}</p><button type="button" onclick="window.openNewsReaderById('${id}')" class="text-schoolGreen text-sm font-bold uppercase tracking-wider inline-flex items-center group-hover:text-schoolGold transition self-start cursor-pointer transform hover:scale-105">Read More <i class="fas fa-arrow-right ml-1"></i></button></div></div>`;
+                    container.innerHTML += `<div class="relative bg-white rounded shadow overflow-hidden border-t-2 border-schoolGold group transform hover:-translate-y-1 transition duration-300 flex flex-col">${imageBadge}<div class="admin-only absolute top-4 right-4 gap-2 hidden z-20"><button onclick="editNewsRecord('${id}')" class="bg-blue-600 text-white w-8 h-8 rounded shadow flex items-center justify-center hover:bg-blue-700"><i class="fas fa-edit"></i></button><button onclick="deleteNewsRecord('${id}')" class="bg-red-600 text-white w-8 h-8 rounded shadow flex items-center justify-center hover:bg-red-700"><i class="fas fa-trash"></i></button></div><div class="p-6 flex-grow flex flex-col"><span class="text-xs font-bold text-schoolGold uppercase tracking-wider">${safeTag}</span><h4 class="font-serif text-xl font-bold text-schoolGreen mt-2 mb-3">${safeTitle}</h4><p class="text-sm text-gray-600 mb-6 leading-relaxed flex-grow line-clamp-3">${news.content}</p><button onclick="openNewsReaderById('${id}')" class="text-schoolGreen text-sm font-bold uppercase tracking-wider inline-flex items-center group-hover:text-schoolGold transition self-start cursor-pointer transform hover:scale-105">Read More <i class="fas fa-arrow-right ml-1"></i></button></div></div>`;
                 });
             } catch (e) { console.error("Error fetching news:", e); }
         }
 
-        async function fetchHomepageSafe() {
+        async function fetchHomepage() {
             try {
                 const docSnap = await getDoc(doc(db, "pages", "home"));
                 const data = docSnap.exists() ? docSnap.data() : {};
                 
-                document.querySelectorAll('.editable-text[data-db-field]').forEach(el => { 
-                    const field = el.getAttribute('data-db-field'); 
-                    if (data[field]) el.innerText = data[field]; 
-                });
-                document.querySelectorAll('.editable-img[data-db-field]').forEach(el => { 
-                    const field = el.getAttribute('data-db-field'); 
-                    const val = data[field];
-                    if (isValidImgSrc(val)) { 
-                        el.src = val; 
-                        el.style.opacity = '1'; 
-                    }
-                });
-                document.querySelectorAll('.editable-bg[data-db-field]').forEach(el => { 
-                    const field = el.getAttribute('data-db-field'); 
-                    const val = data[field];
-                    if (isValidImgSrc(val)) { 
-                        el.style.backgroundImage = `url('${val}')`; 
-                        el.setAttribute('data-bg-url', val); 
-                    }
-                });
-                document.querySelectorAll('.editable-link[data-db-field]').forEach(el => { 
-                    const field = el.getAttribute('data-db-field'); 
-                    if (data[field]) el.setAttribute('href', data[field]); 
-                });
+                document.querySelectorAll('.editable-text[data-db-field]').forEach(el => { const field = el.getAttribute('data-db-field'); if (data[field]) el.innerText = data[field]; });
+                document.querySelectorAll('.editable-img[data-db-field]').forEach(el => { const field = el.getAttribute('data-db-field'); if (data[field] && !data[field].startsWith('file:')) { el.src = data[field]; el.style.opacity = '1'; }});
+                document.querySelectorAll('.editable-bg[data-db-field]').forEach(el => { const field = el.getAttribute('data-db-field'); if (data[field] && !data[field].startsWith('file:')) { el.style.backgroundImage = `url('${data[field]}')`; el.setAttribute('data-bg-url', data[field]); }});
+                document.querySelectorAll('.editable-link[data-db-field]').forEach(el => { const field = el.getAttribute('data-db-field'); if (data[field]) { el.setAttribute('href', data[field]); }});
                 
                 renderDynamicArrays(data);
             } catch(e) {
                 renderDynamicArrays({});
             }
         }
-        fetchHomepageSafe();
-        window.fetchLiveNews();
+        fetchHomepage(); window.fetchLiveNews();
 
         const loginModal = document.getElementById('inline-login-modal'); const adminBar = document.getElementById('admin-floating-bar'); const editToggle = document.getElementById('edit-mode-toggle'); const saveBtn = document.getElementById('save-live-edits-btn');
         document.getElementById('trigger-login-modal').addEventListener('click', () => loginModal.classList.remove('hidden'));
@@ -970,12 +819,12 @@
             const linkElements = document.querySelectorAll('.editable-link');
             if (isActive) {
                 document.body.classList.add('edit-mode-active'); saveBtn.classList.remove('hidden');
-                textElements.forEach(el => { el.contentEditable = true; }); imgElements.forEach(el => { el.addEventListener('click', window.handleImageClick); });
-                linkElements.forEach(el => { el.addEventListener('click', window.handleLinkClick); });
+                textElements.forEach(el => { el.contentEditable = true; }); imgElements.forEach(el => { el.addEventListener('click', handleImageClick); });
+                linkElements.forEach(el => { el.addEventListener('click', handleLinkClick); });
             } else {
                 document.body.classList.remove('edit-mode-active'); saveBtn.classList.add('hidden');
-                textElements.forEach(el => { el.contentEditable = false; }); imgElements.forEach(el => { el.removeEventListener('click', window.handleImageClick); });
-                linkElements.forEach(el => { el.removeEventListener('click', window.handleLinkClick); });
+                textElements.forEach(el => { el.contentEditable = false; }); imgElements.forEach(el => { el.removeEventListener('click', handleImageClick); });
+                linkElements.forEach(el => { el.removeEventListener('click', handleLinkClick); });
             }
         }
         editToggle.addEventListener('change', (e) => toggleEditMode(e.target.checked));
@@ -986,11 +835,11 @@
                 const updatedData = {};
                 
                 document.querySelectorAll('.editable-text[data-db-field]').forEach(el => { const dbField = el.getAttribute('data-db-field'); if(dbField) updatedData[dbField] = el.innerText.trim(); });
-                document.querySelectorAll('.editable-img[data-db-field]').forEach(el => { const dbField = el.getAttribute('data-db-field'); const srcVal = el.getAttribute('src'); if(dbField && isValidImgSrc(srcVal)) updatedData[dbField] = srcVal; });
-                document.querySelectorAll('.editable-bg[data-db-field]').forEach(el => { const dbField = el.getAttribute('data-db-field'); const bgVal = el.getAttribute('data-bg-url'); if(dbField && isValidImgSrc(bgVal)) updatedData[dbField] = bgVal; });
+                document.querySelectorAll('.editable-img[data-db-field]').forEach(el => { const dbField = el.getAttribute('data-db-field'); if(dbField) updatedData[dbField] = el.getAttribute('src'); });
+                document.querySelectorAll('.editable-bg[data-db-field]').forEach(el => { const dbField = el.getAttribute('data-db-field'); if(dbField) updatedData[dbField] = el.getAttribute('data-bg-url'); });
                 document.querySelectorAll('.editable-link[data-db-field]').forEach(el => { const dbField = el.getAttribute('data-db-field'); if(dbField) updatedData[dbField] = el.getAttribute('href'); });
                 
-                const bannersArr = []; document.querySelectorAll('#live-banner-container img').forEach(img => { const s = img.getAttribute('src'); if(isValidImgSrc(s)) bannersArr.push(s); }); updatedData['sportsBanners'] = bannersArr;
+                const bannersArr = []; document.querySelectorAll('#live-banner-container img').forEach(img => { bannersArr.push(img.getAttribute('src')); }); updatedData['sportsBanners'] = bannersArr;
                 updatedData['academicsStats'] = gatherStatsData();
                 updatedData['academicsStreams'] = gatherStreamsData();
                 updatedData['sportsList'] = gatherSportsData();
@@ -1006,18 +855,25 @@
             previewDiv.innerHTML = currentNewsImages.map((src, i) => `
                 <div class="relative flex-shrink-0">
                     <img src="${src}" class="h-16 w-16 object-cover rounded border border-schoolGold">
-                    <button type="button" onclick="window.removeNewsImage(${i})" class="absolute -top-1 -right-1 bg-red-600 text-white rounded-full w-4 h-4 text-[10px] flex items-center justify-center">&times;</button>
+                    <button type="button" onclick="removeNewsImage(${i})" class="absolute -top-1 -right-1 bg-red-600 text-white rounded-full w-4 h-4 text-[10px] flex items-center justify-center">&times;</button>
                 </div>
             `).join('');
         }
 
-        window.removeNewsImage = function(index) { currentNewsImages.splice(index, 1); renderNewsImagePreviews(); };
-        window.clearNewsImages = function() { currentNewsImages = []; renderNewsImagePreviews(); };
+        window.removeNewsImage = function(index) {
+            currentNewsImages.splice(index, 1);
+            renderNewsImagePreviews();
+        };
+
+        window.clearNewsImages = function() {
+            currentNewsImages = [];
+            renderNewsImagePreviews();
+        };
 
         document.getElementById('news-file-picker').addEventListener('change', async (e) => {
             const files = Array.from(e.target.files);
             for (const file of files) {
-                const compressed = await compressImageFile(file, 900, 0.65);
+                const compressed = await compressImageFile(file, 900, 0.7);
                 currentNewsImages.push(compressed);
             }
             renderNewsImagePreviews();
@@ -1062,7 +918,7 @@
             const galleryDiv = document.getElementById('modal-gallery'); galleryDiv.innerHTML = '';
             const images = Array.isArray(news.images) ? news.images : [];
             if (images.length > 0) {
-                galleryDiv.innerHTML = `<div class="relative mt-6 rounded-lg overflow-hidden border-2 border-gray-100"><button type="button" onclick="window.scrollGallery(-1)" class="absolute left-2 top-1/2 -translate-y-1/2 bg-schoolGreen/80 hover:bg-schoolGreen text-white w-10 h-10 rounded-full z-10 shadow-lg flex items-center justify-center transition"><i class="fas fa-chevron-left"></i></button><div id="gallery-scroll" class="flex overflow-x-auto gap-2 snap-x snap-mandatory scroll-smooth no-scrollbar p-2 bg-gray-50">${images.map((img, idx) => `<img src="${img}" onclick="window.openFullscreen(window.newsData['${id}'].images[${idx}])" class="h-48 md:h-64 w-auto object-cover snap-center rounded cursor-pointer hover:opacity-90 shadow transition">`).join('')}</div><button type="button" onclick="window.scrollGallery(1)" class="absolute right-2 top-1/2 -translate-y-1/2 bg-schoolGreen/80 hover:bg-schoolGreen text-white w-10 h-10 rounded-full z-10 shadow-lg flex items-center justify-center transition"><i class="fas fa-chevron-right"></i></button></div>`;
+                galleryDiv.innerHTML = `<div class="relative mt-6 rounded-lg overflow-hidden border-2 border-gray-100"><button onclick="scrollGallery(-1)" class="absolute left-2 top-1/2 -translate-y-1/2 bg-schoolGreen/80 hover:bg-schoolGreen text-white w-10 h-10 rounded-full z-10 shadow-lg flex items-center justify-center transition"><i class="fas fa-chevron-left"></i></button><div id="gallery-scroll" class="flex overflow-x-auto gap-2 snap-x snap-mandatory scroll-smooth no-scrollbar p-2 bg-gray-50">${images.map((img, idx) => `<img src="${img}" onclick="openFullscreen(window.newsData['${id}'].images[${idx}])" class="h-48 md:h-64 w-auto object-cover snap-center rounded cursor-pointer hover:opacity-90 shadow transition">`).join('')}</div><button onclick="scrollGallery(1)" class="absolute right-2 top-1/2 -translate-y-1/2 bg-schoolGreen/80 hover:bg-schoolGreen text-white w-10 h-10 rounded-full z-10 shadow-lg flex items-center justify-center transition"><i class="fas fa-chevron-right"></i></button></div>`;
             }
             document.getElementById('custom-modal').classList.remove('hidden');
         }
@@ -1070,6 +926,56 @@
         window.scrollGallery = function(direction) { const scroller = document.getElementById('gallery-scroll'); if(scroller) scroller.scrollBy({ left: direction * 300, behavior: 'smooth' }); }
         window.openFullscreen = function(src) { document.getElementById('fs-img').src = src; document.getElementById('fs-modal').classList.remove('hidden'); }
         window.closeFullscreen = function() { document.getElementById('fs-modal').classList.add('hidden'); }
+    </script>
+    <script src="script.js"></script>
+    <!-- CLEAN NAVIGATION OVERRIDE -->
+    <script>
+        window.switchPage = function(pageId) {
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            const targetSection = document.getElementById('page-' + pageId);
+            if (targetSection) {
+                targetSection.classList.remove('hidden');
+            }
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-white', 'border-b-2', 'border-schoolGold');
+                btn.classList.add('text-gray-200');
+            });
+            const activeBtn = document.getElementById('nav-' + pageId);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-gray-200');
+                activeBtn.classList.add('text-white', 'border-b-2', 'border-schoolGold');
+            }
+
+            document.querySelectorAll('.mob-nav-btn').forEach(btn => {
+                btn.classList.remove('text-white', 'border-l-2', 'border-schoolGold');
+                btn.classList.add('text-gray-300');
+            });
+            const mobActiveBtn = document.getElementById('mob-nav-' + pageId);
+            if (mobActiveBtn) {
+                mobActiveBtn.classList.remove('text-gray-300');
+                mobActiveBtn.classList.add('text-white', 'border-l-2', 'border-schoolGold');
+            }
+
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        window.navigateIfNotEditing = function(pageId) {
+            if (document.body.classList.contains('edit-mode-active')) return;
+            window.switchPage(pageId);
+        };
+
+        window.toggleMobileMenu = function() {
+            const menu = document.getElementById('mobile-menu');
+            if (menu) menu.classList.toggle('hidden');
+        };
     </script>
 </body>
 </html>
