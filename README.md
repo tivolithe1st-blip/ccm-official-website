@@ -19,4 +19,4 @@ Official responsive website and custom inline Content Management System (CMS) de
 
 ## 👨‍💻 Developer
 **Chanitha Samarasinghe** ([@tivolithe1st-blip](https://github.com/tivolithe1st-blip))  
-Department of Electronic & Telecommunication Engineering (ENTC), University of Moratuwa
+Department of Electronic & Telecommunication Engineering , University of Moratuwa
