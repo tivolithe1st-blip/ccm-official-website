@@ -529,8 +529,9 @@
         window.newsData = {};
         let bannerInterval = null;
         let currentNewsImages = [];
+        let hasLoadedFromDb = false;
 
-        function compressImageFile(file, maxWidth = 1000, quality = 0.7) {
+        function compressImageFile(file, maxWidth = 700, quality = 0.6) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
                 reader.onload = (event) => {
@@ -805,8 +806,22 @@
 
         async function fetchHomepage() {
             try {
-                const docSnap = await getDoc(doc(db, "pages", "home"));
-                const data = docSnap.exists() ? docSnap.data() : {};
+                const [homeSnap, bannerSnap, sportsSnap, clubsSnap, acadSnap] = await Promise.all([
+                    getDoc(doc(db, "pages", "home")),
+                    getDoc(doc(db, "pages", "banners")),
+                    getDoc(doc(db, "pages", "sports")),
+                    getDoc(doc(db, "pages", "clubs")),
+                    getDoc(doc(db, "pages", "academics"))
+                ]);
+
+                const data = homeSnap.exists() ? homeSnap.data() : {};
+                if (bannerSnap.exists() && bannerSnap.data().sportsBanners) data.sportsBanners = bannerSnap.data().sportsBanners;
+                if (sportsSnap.exists() && sportsSnap.data().sportsList) data.sportsList = sportsSnap.data().sportsList;
+                if (clubsSnap.exists() && clubsSnap.data().clubsList) data.clubsList = clubsSnap.data().clubsList;
+                if (acadSnap.exists()) {
+                    if (acadSnap.data().academicsStats) data.academicsStats = acadSnap.data().academicsStats;
+                    if (acadSnap.data().academicsStreams) data.academicsStreams = acadSnap.data().academicsStreams;
+                }
                 
                 document.querySelectorAll('.editable-text[data-db-field]').forEach(el => { const field = el.getAttribute('data-db-field'); if (data[field]) el.innerText = data[field]; });
                 document.querySelectorAll('.editable-img[data-db-field]').forEach(el => { const field = el.getAttribute('data-db-field'); if (data[field] && !data[field].startsWith('file:')) { el.src = data[field]; el.style.opacity = '1'; }});
@@ -814,7 +829,9 @@
                 document.querySelectorAll('.editable-link[data-db-field]').forEach(el => { const field = el.getAttribute('data-db-field'); if (data[field]) { el.setAttribute('href', data[field]); }});
                 
                 renderDynamicArrays(data);
+                hasLoadedFromDb = true;
             } catch(e) {
+                console.error("Error loading site data:", e);
                 renderDynamicArrays({});
             }
         }
@@ -843,24 +860,33 @@
         editToggle.addEventListener('change', (e) => toggleEditMode(e.target.checked));
 
         saveBtn.addEventListener('click', async () => {
+            if (!hasLoadedFromDb && !confirm("Existing database data did not finish loading. Saving now may overwrite previously saved photos. Continue?")) return;
             saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Saving...'; saveBtn.disabled = true;
             try {
-                const updatedData = {};
+                const homeData = {};
+                document.querySelectorAll('.editable-text[data-db-field]').forEach(el => { const dbField = el.getAttribute('data-db-field'); if(dbField) homeData[dbField] = el.innerText.trim(); });
+                document.querySelectorAll('.editable-img[data-db-field]').forEach(el => { const dbField = el.getAttribute('data-db-field'); if(dbField) homeData[dbField] = el.getAttribute('src'); });
+                document.querySelectorAll('.editable-bg[data-db-field]').forEach(el => { const dbField = el.getAttribute('data-db-field'); if(dbField) homeData[dbField] = el.getAttribute('data-bg-url'); });
+                document.querySelectorAll('.editable-link[data-db-field]').forEach(el => { const dbField = el.getAttribute('data-db-field'); if(dbField) homeData[dbField] = el.getAttribute('href'); });
                 
-                document.querySelectorAll('.editable-text[data-db-field]').forEach(el => { const dbField = el.getAttribute('data-db-field'); if(dbField) updatedData[dbField] = el.innerText.trim(); });
-                document.querySelectorAll('.editable-img[data-db-field]').forEach(el => { const dbField = el.getAttribute('data-db-field'); if(dbField) updatedData[dbField] = el.getAttribute('src'); });
-                document.querySelectorAll('.editable-bg[data-db-field]').forEach(el => { const dbField = el.getAttribute('data-db-field'); if(dbField) updatedData[dbField] = el.getAttribute('data-bg-url'); });
-                document.querySelectorAll('.editable-link[data-db-field]').forEach(el => { const dbField = el.getAttribute('data-db-field'); if(dbField) updatedData[dbField] = el.getAttribute('href'); });
-                
-                const bannersArr = []; document.querySelectorAll('#live-banner-container img').forEach(img => { bannersArr.push(img.getAttribute('src')); }); updatedData['sportsBanners'] = bannersArr;
-                updatedData['academicsStats'] = gatherStatsData();
-                updatedData['academicsStreams'] = gatherStreamsData();
-                updatedData['sportsList'] = gatherSportsData();
-                updatedData['clubsList'] = gatherClubsData();
+                const bannersArr = [];
+                document.querySelectorAll('#live-banner-container img').forEach(img => { bannersArr.push(img.getAttribute('src')); });
 
-                await setDoc(doc(db, "pages", "home"), updatedData, { merge: true });
+                await Promise.all([
+                    setDoc(doc(db, "pages", "home"), homeData),
+                    setDoc(doc(db, "pages", "banners"), { sportsBanners: bannersArr }),
+                    setDoc(doc(db, "pages", "sports"), { sportsList: gatherSportsData() }),
+                    setDoc(doc(db, "pages", "clubs"), { clubsList: gatherClubsData() }),
+                    setDoc(doc(db, "pages", "academics"), { academicsStats: gatherStatsData(), academicsStreams: gatherStreamsData() })
+                ]);
+
                 const status = document.getElementById('save-status'); status.classList.remove('hidden'); setTimeout(() => status.classList.add('hidden'), 3000);
-            } catch (e) { alert("Save failed. If you uploaded many new high-res photos at once, try saving 2-3 photos at a time."); } finally { saveBtn.innerHTML = '<i class="fas fa-save mr-2"></i> Save Page Changes'; saveBtn.disabled = false; }
+            } catch (e) {
+                console.error("Save error:", e);
+                alert("Save failed: " + e.message);
+            } finally {
+                saveBtn.innerHTML = '<i class="fas fa-save mr-2"></i> Save Page Changes'; saveBtn.disabled = false;
+            }
         });
 
         function renderNewsImagePreviews() {
@@ -886,7 +912,7 @@
         document.getElementById('news-file-picker').addEventListener('change', async (e) => {
             const files = Array.from(e.target.files);
             for (const file of files) {
-                const compressed = await compressImageFile(file, 900, 0.7);
+                const compressed = await compressImageFile(file, 700, 0.6);
                 currentNewsImages.push(compressed);
             }
             renderNewsImagePreviews();
@@ -919,7 +945,7 @@
             try {
                 if (id) { await updateDoc(doc(db, "news", id), { title, tag, content, images: currentNewsImages }); } else { await addDoc(collection(db, "news"), { title, tag, content, images: currentNewsImages, timestamp: serverTimestamp() }); }
                 window.closeNewsEditor(); window.fetchLiveNews(); 
-            } catch (e) { alert("Failed to save news."); } finally { btn.innerHTML = 'Save & Upload Bulletin'; btn.disabled = false; }
+            } catch (e) { alert("Failed to save news: " + e.message); } finally { btn.innerHTML = 'Save & Upload Bulletin'; btn.disabled = false; }
         });
         window.deleteNewsRecord = async function(id) { if(confirm("Permanently delete this news post?")) { try { await deleteDoc(doc(db, "news", id)); window.fetchLiveNews(); } catch(e) { alert("Delete failed."); } } }
 
